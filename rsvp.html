@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RSVP — Caitlin & Paul</title>
+<meta name="description" content="RSVP for Caitlin and Paul's wedding in Mexico City, October 16, 2027.">
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+<nav class="site-nav">
+  <div class="container">
+    <a href="index.html" class="nav-mark">Caitlin <span>&</span> Paul</a>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="our-story.html">Our Story</a>
+      <a href="the-wedding.html">The Wedding</a>
+      <a href="registry.html">Registry</a>
+      <a href="travel.html">Travel</a>
+      <a href="stay.html">Stay</a>
+      <a href="explore-cdmx.html">Explore CDMX</a>
+      <a href="faq.html">FAQ</a>
+      <a href="rsvp.html" class="nav-rsvp">RSVP</a>
+    </div>
+    <button class="nav-toggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+<div class="mobile-panel">
+  <a href="index.html">Home</a>
+  <a href="our-story.html">Our Story</a>
+  <a href="the-wedding.html">The Wedding</a>
+  <a href="registry.html">Registry</a>
+  <a href="travel.html">Travel</a>
+  <a href="stay.html">Stay</a>
+  <a href="explore-cdmx.html">Explore CDMX</a>
+  <a href="faq.html">FAQ</a>
+  <a href="rsvp.html">RSVP</a>
+</div>
+
+<header class="page-header">
+  <div class="page-header-arch"></div>
+  <div class="container">
+    <span class="eyebrow on-dark">RSVP</span>
+    <h1>Let us know you're coming.</h1>
+    <p class="lede">Takes about two minutes. One RSVP per guest, please — if you're bringing someone, have them submit their own.</p>
+  </div>
+</header>
+
+<section class="section bg-paper">
+  <div class="container" style="max-width:760px;">
+    <div class="rsvp-shell reveal">
+
+      <div class="deadline-strip">
+        <span class="small-caps" style="color:var(--clay-dark);">Please respond by</span>
+        <strong id="rsvp-deadline"></strong>
+      </div>
+
+      <form data-rsvp-form>
+        <div class="form-row form-block">
+          <div>
+            <label for="fullName">Full Name</label>
+            <input type="text" id="fullName" name="fullName" required>
+          </div>
+          <div>
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" required>
+          </div>
+        </div>
+
+        <div class="form-block">
+          <label>Will you be joining us?</label>
+          <div class="radio-group">
+            <label class="radio-pill">
+              <input type="radio" name="attending" value="yes" checked>
+              <span>Joyfully Yes</span>
+            </label>
+            <label class="radio-pill">
+              <input type="radio" name="attending" value="no">
+              <span>Sadly Can't Make It</span>
+            </label>
+          </div>
+        </div>
+
+        <div data-attending-fields>
+
+          <div class="form-row form-block">
+            <div>
+              <label for="guestName">Guest Name <span style="text-transform:none; letter-spacing:0;">(if bringing someone)</span></label>
+              <input type="text" id="guestName" name="guestName">
+            </div>
+            <div>
+              <label for="meal">Meal Selection</label>
+              <select id="meal" name="meal"></select>
+            </div>
+          </div>
+
+          <div class="form-block">
+            <label for="dietary">Dietary Restrictions</label>
+            <textarea id="dietary" name="dietary" placeholder="Allergies, preferences, anything we should know"></textarea>
+          </div>
+
+          <div class="form-row form-block">
+            <div>
+              <label for="arrival">Arrival Date</label>
+              <input type="date" id="arrival" name="arrival">
+            </div>
+            <div>
+              <label for="departure">Departure Date</label>
+              <input type="date" id="departure" name="departure">
+            </div>
+          </div>
+
+          <div class="form-row form-block">
+            <div>
+              <label for="hotel">Hotel / Accommodation</label>
+              <select id="hotel" name="hotel"></select>
+            </div>
+            <div>
+              <label for="transportNeeds">Transportation Needs</label>
+              <select id="transportNeeds" name="transportNeeds">
+                <option>Not sure yet</option>
+                <option>I'll arrange my own (Uber, etc.)</option>
+                <option>Interested in group transportation</option>
+                <option>Need airport transfer info</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-block">
+            <label for="notes">Additional Notes</label>
+            <textarea id="notes" name="notes" placeholder="Anything else we should know"></textarea>
+            <p class="form-note">Song requests, questions, or just a hello — we read every note.</p>
+          </div>
+
+        </div>
+
+        <button type="submit" class="btn btn-primary mt-2" style="width:100%; justify-content:center;">Send RSVP <span class="btn-arrow">→</span></button>
+      </form>
+
+      <div class="form-success" data-rsvp-success>
+        <div class="stamp">✓</div>
+        <h2>You're on the list.</h2>
+        <p class="lede text-center mt-2">Thank you for letting us know — we can't wait to celebrate with you in Mexico City. Check the Travel and Stay pages whenever you're ready to start planning your trip.</p>
+        <a href="travel.html" class="btn btn-outline mt-3">Start Planning Your Trip <span class="btn-arrow">→</span></a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-top">
+      <div>
+        <div class="footer-mark">Caitlin <span>&</span> Paul</div>
+        <div class="footer-sub">Mexico City · October 16, 2027</div>
+      </div>
+      <div class="footer-links">
+        <div class="footer-col">
+          <h4>Plan</h4>
+          <a href="rsvp.html">RSVP</a>
+          <a href="registry.html">Registry</a>
+          <a href="travel.html">Travel</a>
+          <a href="stay.html">Stay</a>
+          <a href="explore-cdmx.html">Explore CDMX</a>
+        </div>
+        <div class="footer-col">
+          <h4>About</h4>
+          <a href="our-story.html">Our Story</a>
+          <a href="the-wedding.html">The Wedding</a>
+          <a href="faq.html">FAQ</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>See you in CDMX. 🇲🇽</span>
+      <span>Caitlin &amp; Paul, 2027</span>
+    </div>
+  </div>
+</footer>
+
+<script src="assets/js/content.js"></script>
+<script src="assets/js/main.js"></script>
+<script>
+  document.getElementById('rsvp-deadline').textContent = WEDDING.rsvpDeadline;
+  const mealSelect = document.getElementById('meal');
+  mealSelect.innerHTML = MEAL_OPTIONS.map((m,i) => `<option value="${m}" ${i===0?'disabled selected':''}>${m}</option>`).join('');
+  const hotelSelect = document.getElementById('hotel');
+  hotelSelect.innerHTML = HOTEL_OPTIONS.map((h,i) => `<option value="${h}" ${i===0?'disabled selected':''}>${h}</option>`).join('');
+</script>
+</body>
+</html>

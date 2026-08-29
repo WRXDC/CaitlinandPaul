@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FAQ — Caitlin & Paul</title>
+<meta name="description" content="Frequently asked questions about Caitlin and Paul's wedding in Mexico City — travel, staying, and the wedding itself.">
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+<nav class="site-nav">
+  <div class="container">
+    <a href="index.html" class="nav-mark">Caitlin <span>&</span> Paul</a>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="our-story.html">Our Story</a>
+      <a href="the-wedding.html">The Wedding</a>
+      <a href="registry.html">Registry</a>
+      <a href="travel.html">Travel</a>
+      <a href="stay.html">Stay</a>
+      <a href="explore-cdmx.html">Explore CDMX</a>
+      <a href="faq.html">FAQ</a>
+      <a href="rsvp.html" class="nav-rsvp">RSVP</a>
+    </div>
+    <button class="nav-toggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+<div class="mobile-panel">
+  <a href="index.html">Home</a>
+  <a href="our-story.html">Our Story</a>
+  <a href="the-wedding.html">The Wedding</a>
+  <a href="registry.html">Registry</a>
+  <a href="travel.html">Travel</a>
+  <a href="stay.html">Stay</a>
+  <a href="explore-cdmx.html">Explore CDMX</a>
+  <a href="faq.html">FAQ</a>
+  <a href="rsvp.html">RSVP</a>
+</div>
+
+<header class="page-header">
+  <div class="page-header-arch"></div>
+  <div class="container">
+    <span class="eyebrow on-dark">FAQ</span>
+    <h1>Questions, answered.</h1>
+    <p class="lede">Everything guests ask us most. Can't find yours? Reach out directly.</p>
+  </div>
+</header>
+
+<section class="section bg-paper">
+  <div class="container" style="max-width:760px;">
+    <div class="faq-search reveal">
+      <input type="text" placeholder="Search a question — try “passport” or “hotel”" data-faq-search aria-label="Search FAQ">
+    </div>
+    <div id="faq-wrap"></div>
+    <p class="no-results">No questions match that search — try another word, or reach out to us directly.</p>
+  </div>
+</section>
+
+<section class="section-tight bg-clay-tint">
+  <div class="container text-center reveal" style="max-width:520px;">
+    <span class="eyebrow" style="justify-content:center;">Ready?</span>
+    <h2 class="mt-1">Let us know you're coming</h2>
+    <a href="rsvp.html" class="btn btn-primary mt-3">RSVP <span class="btn-arrow">→</span></a>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-top">
+      <div>
+        <div class="footer-mark">Caitlin <span>&</span> Paul</div>
+        <div class="footer-sub">Mexico City · October 16, 2027</div>
+      </div>
+      <div class="footer-links">
+        <div class="footer-col">
+          <h4>Plan</h4>
+          <a href="rsvp.html">RSVP</a>
+          <a href="registry.html">Registry</a>
+          <a href="travel.html">Travel</a>
+          <a href="stay.html">Stay</a>
+          <a href="explore-cdmx.html">Explore CDMX</a>
+        </div>
+        <div class="footer-col">
+          <h4>About</h4>
+          <a href="our-story.html">Our Story</a>
+          <a href="the-wedding.html">The Wedding</a>
+          <a href="faq.html">FAQ</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>See you in CDMX. 🇲🇽</span>
+      <span>Caitlin &amp; Paul, 2027</span>
+    </div>
+  </div>
+</footer>
+
+<script src="assets/js/content.js"></script>
+<script src="assets/js/main.js"></script>
+<script>
+  const faqWrap = document.getElementById('faq-wrap');
+  faqWrap.innerHTML = FAQ.map(group => `
+    <h3 class="faq-category-label eyebrow">${group.category}</h3>
+    ${group.items.map(item => Render.accordionItem(item.q, item.a)).join('')}
+  `).join('');
+
+  // Re-bind accordion listeners for dynamically injected content
+  faqWrap.querySelectorAll('.accordion-trigger').forEach(trigger => {
+    trigger.addEventListener('click', () => {
+      const item = trigger.closest('.accordion-item');
+      const panel = item.querySelector('.accordion-panel');
+      const isOpen = item.classList.contains('is-open');
+      item.classList.toggle('is-open', !isOpen);
+      trigger.setAttribute('aria-expanded', String(!isOpen));
+      panel.style.maxHeight = !isOpen ? panel.scrollHeight + 'px' : '0px';
+    });
+  });
+
+  // Re-bind search now that content exists
+  const faqSearch = document.querySelector('[data-faq-search]');
+  const items = Array.from(document.querySelectorAll('.accordion-item'));
+  const categoryLabels = Array.from(document.querySelectorAll('.faq-category-label'));
+  const noResults = document.querySelector('.no-results');
+  faqSearch.addEventListener('input', () => {
+    const q = faqSearch.value.trim().toLowerCase();
+    let anyVisible = false;
+    items.forEach(item => {
+      const match = item.textContent.toLowerCase().includes(q);
+      item.style.display = match ? '' : 'none';
+      if(match) anyVisible = true;
+    });
+    categoryLabels.forEach(label => {
+      let next = label.nextElementSibling;
+      let hasVisible = false;
+      while(next && !next.classList.contains('faq-category-label')){
+        if(next.classList.contains('accordion-item') && next.style.display !== 'none') hasVisible = true;
+        next = next.nextElementSibling;
+      }
+      label.style.display = hasVisible ? '' : 'none';
+    });
+    if(noResults) noResults.style.display = anyVisible ? 'none' : 'block';
+  });
+</script>
+</body>
+</html>
