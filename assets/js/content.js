@@ -108,53 +108,14 @@ const NEIGHBORHOODS = [
   {
     id: "polanco",
     name: "Polanco",
-    vibe: "Upscale & Polished",
-    bestFor: "Guests who want a five-star-hotel feel",
+    vibe: "Where We're Staying",
+    bestFor: "Everyone — it's where our room block and wedding-day shuttle are",
     distance: "TBD from Casa Xipe",
     tone: "tone-3",
-    description: "Mexico City's most polished neighborhood — wide tree-lined avenues, world-class restaurants, high-end shopping along Presidente Masaryk, and several of the city's best museums nearby.",
+    description: "To keep things simple, we're recommending everyone stay in Polanco — Mexico City's most polished neighborhood, with wide tree-lined avenues, world-class restaurants, high-end shopping, and several great museums nearby. It's also where our wedding-day shuttle picks up and drops off, so staying here (or nearby) means you're covered.",
     hotels: [
-      { name: "InterContinental Presidente Mexico City", tier: "$$$", desc: "We've secured an affordable room block here for our guests — a large, reliable property right in the heart of Polanco. We'll also be running a shuttle straight from here to Casa Xipe and back on the wedding day.", distance: "TBD", roomBlock: true },
-      { name: "Hotel Name TBD", tier: "$$$", desc: "Placeholder — polished and well-located, a notch more relaxed.", distance: "TBD" },
-    ],
-  },
-  {
-    id: "condesa",
-    name: "Condesa",
-    vibe: "Leafy & Walkable",
-    bestFor: "First-time visitors who want charm underfoot",
-    distance: "TBD from Casa Xipe",
-    tone: "tone-2",
-    description: "Art Deco buildings, wide jacaranda-lined streets, and two lovely parks at its center. Condesa is endlessly walkable, full of cafés and bars, and a favorite of ours — a great home base for a first visit.",
-    hotels: [
-      { name: "Hotel Name TBD", tier: "$$$", desc: "Placeholder — a stylish boutique stay near Parque México.", distance: "TBD" },
-      { name: "Hotel Name TBD", tier: "$$", desc: "Placeholder — comfortable and well-priced, steps from good coffee.", distance: "TBD" },
-    ],
-  },
-  {
-    id: "roma-norte",
-    name: "Roma Norte",
-    vibe: "Creative & Food-Focused",
-    bestFor: "Guests who want to eat their way through the trip",
-    distance: "TBD from Casa Xipe",
-    tone: "tone-1",
-    description: "Roma Norte is where a lot of Mexico City's best food and design energy lives right now — independent galleries, natural wine bars, and some of the city's most talked-about restaurants, all within an eclectic, walkable grid.",
-    hotels: [
-      { name: "Hotel Name TBD", tier: "$$$", desc: "Placeholder — design-forward boutique hotel in the middle of it all.", distance: "TBD" },
-      { name: "Hotel Name TBD", tier: "$$", desc: "Placeholder — a relaxed, well-located option for exploring on foot.", distance: "TBD" },
-    ],
-  },
-  {
-    id: "reforma",
-    name: "Reforma",
-    vibe: "Central & Convenient",
-    bestFor: "Guests who want big-hotel ease and easy transportation",
-    distance: "TBD from Casa Xipe",
-    tone: "tone-5",
-    description: "Anchored by the grand Paseo de la Reforma boulevard, this area is central, easy to get around from, and home to many of the city's major hotel brands — a solid, low-effort choice.",
-    hotels: [
-      { name: "Hotel Name TBD", tier: "$$$$", desc: "Placeholder — a major hotel brand right on Reforma.", distance: "TBD" },
-      { name: "Hotel Name TBD", tier: "$$$", desc: "Placeholder — reliable, central, and easy for groups.", distance: "TBD" },
+      { name: "InterContinental Presidente Mexico City", tier: "$$$", desc: "We've secured an affordable room block here for our guests — a large, reliable property right in the heart of Polanco. This is our main recommendation. We'll also be running a shuttle straight from here to Casa Xipe and back on the wedding day.", distance: "TBD", roomBlock: true },
+      { name: "Residence L'Heritage Tennyson by BlueBay", tier: "$$", desc: "A more affordable apartment-style option a short walk from the InterContinental. You can still meet up with everyone there to catch the shuttle.", distance: "TBD" },
     ],
   },
 ];
@@ -224,7 +185,7 @@ const FAQ = [
   {
     category: "Staying & Getting Around",
     items: [
-      { q: "Where should I stay?", a: "We've secured an affordable room block at the InterContinental Presidente Mexico City in Polanco. We also recommend Condesa, Roma Norte, or Reforma if you'd rather explore other neighborhoods — see our Stay page for a full breakdown of each, plus hotel picks." },
+      { q: "Where should I stay?", a: "We've secured an affordable room block at the InterContinental Presidente Mexico City in Polanco, and that's our one recommendation — it keeps everyone in the same place and it's where our wedding-day shuttle picks up. If you'd like something more affordable nearby, Residence L'Heritage Tennyson by BlueBay is a short walk away and still puts you in range of the shuttle — see our Stay page for details." },
       { q: "How many days should I stay?", a: "We'd suggest at least 3–4 nights if you can swing it — enough time to enjoy the wedding weekend and still explore the city a bit." },
       { q: "Is Mexico City safe?", a: "Yes — it's a huge, modern capital city, and the neighborhoods we're recommending are safe, walkable, and popular with visitors. Normal city precautions apply, as they would in any major city." },
       { q: "Should I rent a car?", a: "Please don't — parking is extremely difficult in Mexico City, and traffic can be a lot to deal with. Get around using Uber instead. It's safe and inexpensive, and available nearly everywhere you'll be." },
@@ -265,4 +226,4 @@ const FAQ = [
 /* -------------------------------------------------------------------- */
 
 const MEAL_OPTIONS = ["Select a meal", "Beef", "Fish", "Vegetarian", "Vegan", "Kids' Menu"];
-const HOTEL_OPTIONS = ["Select a hotel / not yet booked", "InterContinental Presidente Mexico City (room block)", "Other Polanco pick", "Condesa pick", "Roma Norte pick", "Reforma pick", "Other / not staying in a partner hotel"];
+const HOTEL_OPTIONS = ["Select a hotel / not yet booked", "InterContinental Presidente Mexico City (room block)", "Residence L'Heritage Tennyson by BlueBay", "Other hotel near the InterContinental", "Other / not staying near the InterContinental"];
