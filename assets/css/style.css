@@ -363,7 +363,7 @@ p{ color:var(--charcoal-70); max-width:60ch; }
 
 /* ---------------------------------- neighborhood / hotel cards ---------------- */
 .neigh-card{ border:1px solid var(--line); border-radius:var(--radius-sm); overflow:hidden; background:var(--paper); }
-.neigh-card .photo-block{ aspect-ratio:16/10; }
+.neigh-card .photo-block, .neigh-card .photo-frame{ aspect-ratio:16/10; }
 .neigh-card-body{ padding:26px 26px 30px; }
 .neigh-tags{ display:flex; gap:8px; flex-wrap:wrap; margin-top:14px; }
 .tag{ font-family:var(--font-mono); font-size:.64rem; letter-spacing:.08em; text-transform:uppercase; padding:5px 10px; border:1px solid var(--line-strong); border-radius:20px; color:var(--charcoal-70); }
@@ -372,7 +372,7 @@ p{ color:var(--charcoal-70); max-width:60ch; }
 .neigh-meta div .value{ font-weight:600; font-size:.92rem; margin-top:3px; }
 
 .hotel-card{ display:grid; grid-template-columns:1fr 1.4fr; gap:0; border:1px solid var(--line); border-radius:var(--radius-sm); overflow:hidden; background:var(--paper); }
-.hotel-card .photo-block{ min-height:180px; height:100%; }
+.hotel-card .photo-block, .hotel-card .photo-frame{ min-height:180px; height:100%; }
 .hotel-card-body{ padding:24px 26px; display:flex; flex-direction:column; }
 .hotel-card-top{ display:flex; justify-content:space-between; align-items:flex-start; gap:10px; }
 .price-tier{ font-family:var(--font-mono); font-size:.7rem; letter-spacing:.06em; color:var(--clay-dark); white-space:nowrap; }

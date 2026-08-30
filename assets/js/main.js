@@ -159,6 +159,14 @@ const Render = {
     </div>`;
   },
 
+  photoFrame(src, alt, caption, toneIndex, extraClass){
+    if (!src) return Render.photoBlock(caption || alt, toneIndex, extraClass);
+    return `<div class="photo-frame ${extraClass||''}">
+      <img src="${src}" alt="${alt}" loading="lazy">
+      ${caption ? `<span class="photo-caption">${caption}</span>` : ''}
+    </div>`;
+  },
+
   infoCard(num, title, body, linkText, linkHref){
     return `<div class="info-card reveal">
       <span class="icon-num">${num}</span>
@@ -187,7 +195,7 @@ const Render = {
 
   neighborhoodCard(n, i){
     return `<div class="neigh-card reveal">
-      ${Render.photoBlock('Neighborhood photo — ' + n.name, i)}
+      ${Render.photoFrame(n.img, n.name + ' neighborhood', n.name, i)}
       <div class="neigh-card-body">
         <span class="eyebrow">${n.vibe}</span>
         <h3 class="mt-1">${n.name}</h3>
@@ -212,7 +220,7 @@ const Render = {
         ? `<span class="dist-note">Booking link coming soon</span>`
         : `<a class="btn-ghost" href="#">Book Hotel →</a>`);
     return `<div class="hotel-card reveal">
-      ${Render.photoBlock(neighborhoodName + ' hotel photo', i)}
+      ${Render.photoFrame(hotel.img, hotel.name, hotel.name, i)}
       <div class="hotel-card-body">
         <div class="hotel-card-top">
           <div>
@@ -233,7 +241,7 @@ const Render = {
   exploreCard(item, i, opts){
     opts = opts || {};
     return `<div class="feature-card reveal">
-      ${Render.photoBlock(item.name || item.category, i)}
+      ${Render.photoFrame(item.img, item.name || item.category, item.name || item.category, i)}
       <div class="flex-between">
         <h3 style="font-size:1.15rem;">${item.name || item.category}</h3>
         ${item.price ? `<span class="small-caps" style="color:var(--clay-dark);">${item.price}</span>` : ''}

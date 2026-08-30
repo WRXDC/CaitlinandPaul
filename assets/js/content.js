@@ -112,10 +112,11 @@ const NEIGHBORHOODS = [
     bestFor: "Everyone — it's where our room block and wedding-day shuttle are",
     distance: "TBD from Casa Xipe",
     tone: "tone-3",
+    img: "assets/img/polanco-neighborhood.jpg",
     description: "To keep things simple, we're recommending everyone stay in Polanco — Mexico City's most polished neighborhood, with wide tree-lined avenues, world-class restaurants, high-end shopping, and several great museums nearby. It's also where our wedding-day shuttle picks up and drops off, so staying here (or nearby) means you're covered.",
     hotels: [
-      { name: "InterContinental Presidente Mexico City", tier: "$$$", desc: "We've secured an affordable room block here for our guests — a large, reliable property right in the heart of Polanco. This is our main recommendation. We'll also be running a shuttle straight from here to Casa Xipe and back on the wedding day.", distance: "TBD", roomBlock: true },
-      { name: "Residence L'Heritage Tennyson by BlueBay", tier: "$$", desc: "A more affordable apartment-style option a short walk from the InterContinental. You can still meet up with everyone there to catch the shuttle.", distance: "TBD" },
+      { name: "InterContinental Presidente Mexico City", tier: "$$$", desc: "We've secured an affordable room block here for our guests — a large, reliable property right in the heart of Polanco. This is our main recommendation. We'll also be running a shuttle straight from here to Casa Xipe and back on the wedding day.", distance: "TBD", roomBlock: true, img: "assets/img/hotel-intercontinental-presidente.jpg" },
+      { name: "Residence L'Heritage Tennyson by BlueBay", tier: "$$", desc: "A more affordable apartment-style option a short walk from the InterContinental. You can still meet up with everyone there to catch the shuttle.", distance: "TBD", img: "assets/img/hotel-residence-lheritage.jpg" },
     ],
   },
 ];
@@ -125,11 +126,11 @@ const NEIGHBORHOODS = [
 /* -------------------------------------------------------------------- */
 
 const MUST_DO = [
-  { name: "Museo Nacional de Antropología", neighborhood: "Chapultepec", desc: "One of the great museums of the world — an unhurried few hours here rewards you many times over.", price: "$" },
-  { name: "Bosque de Chapultepec", neighborhood: "Chapultepec", desc: "A park more than twice the size of Central Park, with a castle, lakes, and several museums inside it.", price: "Free" },
-  { name: "Museo Frida Kahlo (Casa Azul)", neighborhood: "Coyoacán", desc: "Frida Kahlo's family home, now a museum — book timed tickets in advance, they sell out.", price: "$$" },
-  { name: "Centro Histórico", neighborhood: "Historic Center", desc: "The city's original core — the Zócalo, the Metropolitan Cathedral, and Templo Mayor's Aztec ruins, all within a few blocks.", price: "Free" },
-  { name: "Palacio de Bellas Artes", neighborhood: "Historic Center", desc: "A stunning Art Nouveau/Art Deco theater and museum — even the outside is worth the walk.", price: "$" },
+  { name: "Museo Nacional de Antropología", neighborhood: "Chapultepec", desc: "One of the great museums of the world — an unhurried few hours here rewards you many times over.", price: "$", img: "assets/img/museo-antropologia.jpg" },
+  { name: "Bosque de Chapultepec", neighborhood: "Chapultepec", desc: "A park more than twice the size of Central Park, with a castle, lakes, and several museums inside it.", price: "Free", img: "assets/img/bosque-chapultepec.jpg" },
+  { name: "Museo Frida Kahlo (Casa Azul)", neighborhood: "Coyoacán", desc: "Frida Kahlo's family home, now a museum — book timed tickets in advance, they sell out.", price: "$$", img: "assets/img/museo-frida-kahlo.jpg" },
+  { name: "Centro Histórico", neighborhood: "Historic Center", desc: "The city's original core — the Zócalo, the Metropolitan Cathedral, and Templo Mayor's Aztec ruins, all within a few blocks.", price: "Free", img: "assets/img/centro-historico.jpg" },
+  { name: "Palacio de Bellas Artes", neighborhood: "Historic Center", desc: "A stunning Art Nouveau/Art Deco theater and museum — even the outside is worth the walk.", price: "$", img: "assets/img/palacio-bellas-artes.jpg" },
 ];
 
 const NEIGHBORHOODS_EXPLORE = [
