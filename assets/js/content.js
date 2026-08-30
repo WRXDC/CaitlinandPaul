@@ -202,7 +202,7 @@ const FAQ = [
     items: [
       { q: "What should I wear?", a: "Cocktail attire. Think a suit or dressy separates, or a cocktail dress or dressy jumpsuit — see the Dress Code section on our Wedding page for more detail." },
       { q: "What time does the wedding end?", a: "TBD — we'll share the full day-of timeline as it's finalized." },
-      { q: "Are children invited?", a: "You'll see on your invitation whether your child is included. We're happy to share resources for babysitters that evening, and would be glad to help coordinate." },
+      { q: "Are children invited?", a: "We love your kids, truly — but to keep things simple, we're only able to welcome the little ones named on your invitation. If you need a hand finding a babysitter for the evening, just let us know — we're glad to help." },
       { q: "Can I bring a plus-one?", a: "Please check your invitation — plus-ones are noted there. Reach out to us directly if you have any questions." },
     ],
   },
