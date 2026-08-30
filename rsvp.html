@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<script>if(localStorage.getItem('siteUnlocked')!=='true'){document.documentElement.style.visibility='hidden';}</script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>RSVP — Caitlin & Paul</title>
 <meta name="description" content="RSVP for Caitlin and Paul's wedding in Mexico City, October 16, 2027.">
@@ -200,6 +201,7 @@
 <script src="assets/js/supabase-config.js"></script>
 <script src="assets/js/content.js"></script>
 <script src="assets/js/main.js"></script>
+<script src="assets/js/site-gate.js"></script>
 <script src="assets/js/rsvp.js"></script>
 <script>
   document.getElementById('rsvp-deadline').textContent = WEDDING.rsvpDeadline;

@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<script>if(localStorage.getItem('siteUnlocked')!=='true'){document.documentElement.style.visibility='hidden';}</script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Explore CDMX — Caitlin & Paul</title>
 <meta name="description" content="A curated Mexico City guide from Caitlin and Paul — museums, neighborhoods, food, drink, and day trips.">
@@ -136,6 +137,7 @@
 
 <script src="assets/js/content.js"></script>
 <script src="assets/js/main.js"></script>
+<script src="assets/js/site-gate.js"></script>
 <script>
   document.getElementById('favorites-note').textContent = FAVORITES.note;
   document.getElementById('favorites-note').style.color = 'rgba(244,237,224,.75)';

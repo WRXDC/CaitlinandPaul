@@ -31,6 +31,29 @@ python3 -m http.server 8000
 
 Then open `http://localhost:8000`.
 
+## Site password
+
+Every public page (everything except `rsvp-admin.html`, which has its own real
+login) is behind a simple shared password: **susie** (not case-sensitive).
+
+- Entering it once stores a flag in the browser's `localStorage`, so a visitor
+  isn't asked again on that device/browser.
+- **This is not real security.** The password lives in plain text in
+  `assets/js/site-gate.js`, visible to anyone who views page source. It's just
+  a soft gate to keep search engines and randos who stumble on the URL from
+  seeing wedding details before we're ready to share it widely — don't rely on
+  it to hide anything sensitive.
+- **To change the password**: edit the `PASSWORD` constant in
+  `assets/js/site-gate.js`. Anyone who already unlocked the old password stays
+  unlocked (the flag doesn't check which password was used) unless you also
+  change `STORAGE_KEY` in that file to a new value, which forces everyone to
+  re-enter it.
+- **To remove the gate entirely** later (e.g. once the wedding's passed): 1)
+  delete `assets/js/site-gate.js`, 2) remove the `<script src="assets/js/
+  site-gate.js"></script>` line from each page, and 3) remove the inline
+  `<script>if(localStorage.getItem('siteUnlocked')...</script>` snippet from
+  each page's `<head>`.
+
 ## RSVP system (Supabase)
 
 The RSVP form and admin dashboard are backed by a [Supabase](https://supabase.com)

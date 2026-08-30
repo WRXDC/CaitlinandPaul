@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<script>if(localStorage.getItem('siteUnlocked')!=='true'){document.documentElement.style.visibility='hidden';}</script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Stay — Caitlin & Paul</title>
 <meta name="description" content="Where to stay in Mexico City for Caitlin and Paul's wedding — our room block at the InterContinental Presidente Mexico City in Polanco, plus a more affordable nearby option.">
@@ -99,6 +100,7 @@
 
 <script src="assets/js/content.js"></script>
 <script src="assets/js/main.js"></script>
+<script src="assets/js/site-gate.js"></script>
 <script>
   document.getElementById('neighborhoods-wrap').innerHTML =
     NEIGHBORHOODS.map((n, i) => Render.neighborhoodCard(n, i)).join('');

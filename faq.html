@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<script>if(localStorage.getItem('siteUnlocked')!=='true'){document.documentElement.style.visibility='hidden';}</script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>FAQ — Caitlin & Paul</title>
 <meta name="description" content="Frequently asked questions about Caitlin and Paul's wedding in Mexico City — travel, staying, and the wedding itself.">
@@ -98,6 +99,7 @@
 
 <script src="assets/js/content.js"></script>
 <script src="assets/js/main.js"></script>
+<script src="assets/js/site-gate.js"></script>
 <script>
   const faqWrap = document.getElementById('faq-wrap');
   faqWrap.innerHTML = FAQ.map(group => `

@@ -467,3 +467,23 @@ textarea{ min-height:110px; resize:vertical; }
 .status-badge.status-attending{ background:var(--green-tint); color:var(--green-deep); }
 .status-badge.status-declined{ background:var(--clay-tint); color:var(--clay-dark); }
 .status-badge.status-pending{ background:var(--line); color:var(--charcoal-70); }
+
+/* ---------------------------------- site gate ---------------------------------- */
+.gate-overlay{
+  visibility:visible;
+  position:fixed; inset:0; z-index:9999;
+  background:var(--charcoal); color:var(--paper);
+  display:flex; align-items:center; justify-content:center; padding:20px;
+}
+.gate-box{ max-width:380px; width:100%; text-align:center; }
+.gate-mark{ font-family:var(--font-display); font-size:1.6rem; display:block; margin-bottom:30px; }
+.gate-mark span{ color:var(--ochre); }
+.gate-box h2{ color:var(--paper); }
+.gate-sub{ color:rgba(244,237,224,.7); margin-top:12px; margin-bottom:26px; max-width:none; }
+.gate-input{
+  width:100%; padding:14px 16px; border:1px solid var(--line-on-dark); border-radius:var(--radius-sm);
+  background:transparent; color:var(--paper); font-size:1rem; margin-bottom:16px; text-align:center;
+}
+.gate-input::placeholder{ color:rgba(244,237,224,.4); }
+.gate-input:focus-visible{ outline:2px solid var(--clay); outline-offset:2px; }
+.gate-error{ color:var(--ochre); font-size:.85rem; margin-top:14px; max-width:none; }
