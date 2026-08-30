@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>RSVP Admin — Caitlin & Paul</title>
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+<header class="page-header">
+  <div class="page-header-arch"></div>
+  <div class="container">
+    <span class="eyebrow on-dark">Private</span>
+    <h1>RSVP Dashboard</h1>
+    <p class="lede">Guest responses for Caitlin &amp; Paul's wedding — Mexico City, October 16, 2027. Not for guests.</p>
+  </div>
+</header>
+
+<section class="section bg-paper">
+  <div class="container">
+
+    <div class="rsvp-shell reveal" data-admin-login style="max-width:440px; margin:0 auto;">
+      <div class="form-block">
+        <label for="adminEmail">Email</label>
+        <input type="email" id="adminEmail" name="adminEmail" autocomplete="username" required>
+      </div>
+      <div class="form-block">
+        <label for="adminPassword">Password</label>
+        <input type="password" id="adminPassword" name="adminPassword" autocomplete="current-password" required>
+      </div>
+      <button type="button" class="btn btn-primary" data-admin-login-btn style="width:100%; justify-content:center;">Sign In <span class="btn-arrow">→</span></button>
+      <p class="form-note" data-admin-login-message style="display:none;"></p>
+    </div>
+
+    <div data-admin-dashboard style="display:none;">
+
+      <div class="flex-between mt-1" style="flex-wrap:wrap; gap:16px; margin-bottom:32px;">
+        <span class="small-caps" style="color:var(--charcoal-50);" data-admin-user></span>
+        <button type="button" class="btn-ghost" data-admin-logout>Sign Out</button>
+      </div>
+
+      <div class="glance-card reveal">
+        <div class="glance-grid" style="grid-template-columns:repeat(5,1fr);">
+          <div class="glance-item"><span class="g-label">Total Invited</span><span class="g-value" data-stat-invited>—</span></div>
+          <div class="glance-item"><span class="g-label">Responded</span><span class="g-value" data-stat-responded>—</span></div>
+          <div class="glance-item"><span class="g-label">Attending</span><span class="g-value" data-stat-attending>—</span></div>
+          <div class="glance-item"><span class="g-label">Declined</span><span class="g-value" data-stat-declined>—</span></div>
+          <div class="glance-item"><span class="g-label">Pending</span><span class="g-value" data-stat-pending>—</span></div>
+        </div>
+      </div>
+
+      <div class="admin-toolbar mt-3">
+        <input type="text" placeholder="Search guests or household…" data-admin-search class="admin-search">
+        <select data-admin-filter class="admin-filter">
+          <option value="all">All Statuses</option>
+          <option value="attending">Attending</option>
+          <option value="declined">Declined</option>
+          <option value="pending">Pending</option>
+        </select>
+        <button type="button" class="btn btn-outline" data-admin-export>Export CSV</button>
+      </div>
+
+      <div class="admin-table-wrap mt-2">
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th>Guest</th>
+              <th>Household</th>
+              <th>Status</th>
+              <th>Meal</th>
+              <th>Dietary</th>
+              <th>Arrival</th>
+              <th>Departure</th>
+              <th>Hotel</th>
+              <th>Transportation</th>
+              <th>Notes</th>
+            </tr>
+          </thead>
+          <tbody data-admin-table-body></tbody>
+        </table>
+        <p class="form-note" data-admin-empty style="display:none; padding:20px;">No guests match your search.</p>
+      </div>
+
+    </div>
+
+  </div>
+</section>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="assets/js/supabase-config.js"></script>
+<script src="assets/js/main.js"></script>
+<script src="assets/js/rsvp-admin.js"></script>
+</body>
+</html>

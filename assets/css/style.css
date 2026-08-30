@@ -454,3 +454,16 @@ textarea{ min-height:110px; resize:vertical; }
 .text-center{ text-align:center; margin-left:auto; margin-right:auto; }
 .stat-strip{ display:flex; flex-wrap:wrap; gap:14px; }
 .pill{ font-family:var(--font-mono); font-size:.7rem; letter-spacing:.08em; text-transform:uppercase; padding:8px 16px; border:1px solid var(--line-strong); border-radius:30px; }
+
+/* ---------------------------------- rsvp admin ---------------------------------- */
+.admin-toolbar{ display:flex; flex-wrap:wrap; gap:14px; align-items:center; }
+.admin-toolbar .admin-search{ flex:1; min-width:200px; }
+.admin-toolbar .admin-filter{ min-width:180px; }
+.admin-table-wrap{ overflow-x:auto; border:1px solid var(--line); border-radius:var(--radius-sm); }
+.admin-table{ width:100%; border-collapse:collapse; font-size:.88rem; }
+.admin-table th, .admin-table td{ padding:14px 16px; text-align:left; border-bottom:1px solid var(--line); white-space:normal; }
+.admin-table th{ font-family:var(--font-mono); font-size:.64rem; letter-spacing:.1em; text-transform:uppercase; color:var(--charcoal-50); background:var(--paper); white-space:nowrap; }
+.status-badge{ font-family:var(--font-mono); font-size:.62rem; letter-spacing:.08em; text-transform:uppercase; padding:4px 10px; border-radius:20px; display:inline-block; }
+.status-badge.status-attending{ background:var(--green-tint); color:var(--green-deep); }
+.status-badge.status-declined{ background:var(--clay-tint); color:var(--clay-dark); }
+.status-badge.status-pending{ background:var(--line); color:var(--charcoal-70); }

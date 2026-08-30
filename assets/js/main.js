@@ -143,39 +143,6 @@
     });
   }
 
-  /* ---------------- RSVP form ---------------- */
-  const rsvpForm = document.querySelector('[data-rsvp-form]');
-  if(rsvpForm){
-    const attendingRadios = rsvpForm.querySelectorAll('input[name="attending"]');
-    const conditionalFields = rsvpForm.querySelector('[data-attending-fields]');
-    function syncAttending(){
-      const yes = rsvpForm.querySelector('input[name="attending"]:checked');
-      if(conditionalFields){
-        conditionalFields.style.display = (yes && yes.value === 'yes') ? '' : 'none';
-      }
-    }
-    attendingRadios.forEach(r => r.addEventListener('change', syncAttending));
-    syncAttending();
-
-    // Submission logic is isolated here so a real backend/endpoint can be
-    // dropped in later (e.g. fetch('/api/rsvp', {...})) without touching markup.
-    rsvpForm.addEventListener('submit', function(e){
-      e.preventDefault();
-      const formData = new FormData(rsvpForm);
-      const payload = Object.fromEntries(formData.entries());
-
-      // --- BACKEND HOOK ---
-      // Replace this block with a real submission, e.g.:
-      // fetch('/api/rsvp', { method:'POST', body: JSON.stringify(payload) })
-      console.log('RSVP submitted (no backend connected yet):', payload);
-
-      rsvpForm.style.display = 'none';
-      const success = document.querySelector('[data-rsvp-success]');
-      if(success) success.classList.add('is-visible');
-      window.scrollTo({ top: success ? success.offsetTop - 120 : 0, behavior:'smooth' });
-    });
-  }
-
 })();
 
 /* ==========================================================================

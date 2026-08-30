@@ -56,75 +56,91 @@
         <strong id="rsvp-deadline"></strong>
       </div>
 
-      <form data-rsvp-form>
+      <div data-rsvp-search>
         <div class="form-row form-block">
           <div>
-            <label for="fullName">Full Name</label>
-            <input type="text" id="fullName" name="fullName" required>
+            <label for="searchFirstName">First Name</label>
+            <input type="text" id="searchFirstName" name="searchFirstName" autocomplete="off" required>
           </div>
           <div>
-            <label for="email">Email</label>
-            <input type="email" id="email" name="email" required>
+            <label for="searchLastName">Last Name</label>
+            <input type="text" id="searchLastName" name="searchLastName" autocomplete="off" required>
           </div>
         </div>
+        <button type="button" class="btn btn-primary mt-2" data-find-invitation style="width:100%; justify-content:center;">Find My Invitation <span class="btn-arrow">→</span></button>
+        <p class="form-note" data-search-message style="display:none;"></p>
+      </div>
 
-        <div class="form-block">
-          <label>Will you be joining us?</label>
-          <div class="radio-group">
-            <label class="radio-pill">
-              <input type="radio" name="attending" value="yes" checked>
-              <span>Joyfully Yes</span>
-            </label>
-            <label class="radio-pill">
-              <input type="radio" name="attending" value="no">
-              <span>Sadly Can't Make It</span>
-            </label>
-          </div>
+      <div data-rsvp-found style="display:none;">
+
+        <div class="form-block" data-found-banner>
+          <span class="small-caps" style="color:var(--clay-dark);">Invitation found</span>
+          <h3 class="mt-1" data-found-name></h3>
+          <p class="mt-1" data-found-household style="display:none;"></p>
+          <button type="button" class="btn-ghost mt-1" data-search-again>Not you? Search again</button>
         </div>
 
-        <div data-attending-fields>
-
-          <div class="form-row form-block">
-            <div>
-              <label for="guestName">Guest Name <span style="text-transform:none; letter-spacing:0;">(if bringing someone)</span></label>
-              <input type="text" id="guestName" name="guestName">
-            </div>
-            <div>
-              <label for="meal">Meal Selection</label>
-              <select id="meal" name="meal"></select>
-            </div>
-          </div>
+        <form data-rsvp-form>
 
           <div class="form-block">
-            <label for="dietary">Dietary Restrictions</label>
-            <textarea id="dietary" name="dietary" placeholder="Allergies, preferences, anything we should know"></textarea>
-          </div>
-
-          <div class="form-row form-block">
-            <div>
-              <label for="arrival">Arrival Date</label>
-              <input type="date" id="arrival" name="arrival">
-            </div>
-            <div>
-              <label for="departure">Departure Date</label>
-              <input type="date" id="departure" name="departure">
+            <label>Will you be joining us?</label>
+            <div class="radio-group">
+              <label class="radio-pill">
+                <input type="radio" name="attending" value="yes" checked>
+                <span>Joyfully Yes</span>
+              </label>
+              <label class="radio-pill">
+                <input type="radio" name="attending" value="no">
+                <span>Sadly Can't Make It</span>
+              </label>
             </div>
           </div>
 
-          <div class="form-row form-block">
-            <div>
-              <label for="hotel">Hotel / Accommodation</label>
-              <select id="hotel" name="hotel"></select>
+          <div data-attending-fields>
+
+            <div class="form-row form-block">
+              <div>
+                <label for="guestName">Guest Name <span style="text-transform:none; letter-spacing:0;">(if bringing someone)</span></label>
+                <input type="text" id="guestName" name="guestName">
+              </div>
+              <div>
+                <label for="meal">Meal Selection</label>
+                <select id="meal" name="meal"></select>
+              </div>
             </div>
-            <div>
-              <label for="transportNeeds">Transportation Needs</label>
-              <select id="transportNeeds" name="transportNeeds">
-                <option>Not sure yet</option>
-                <option>I'll arrange my own (Uber, etc.)</option>
-                <option>Interested in group transportation</option>
-                <option>Need airport transfer info</option>
-              </select>
+
+            <div class="form-block">
+              <label for="dietary">Dietary Restrictions</label>
+              <textarea id="dietary" name="dietary" placeholder="Allergies, preferences, anything we should know"></textarea>
             </div>
+
+            <div class="form-row form-block">
+              <div>
+                <label for="arrival">Arrival Date</label>
+                <input type="date" id="arrival" name="arrival">
+              </div>
+              <div>
+                <label for="departure">Departure Date</label>
+                <input type="date" id="departure" name="departure">
+              </div>
+            </div>
+
+            <div class="form-row form-block">
+              <div>
+                <label for="hotel">Hotel / Accommodation</label>
+                <select id="hotel" name="hotel"></select>
+              </div>
+              <div>
+                <label for="transportNeeds">Transportation Needs</label>
+                <select id="transportNeeds" name="transportNeeds">
+                  <option>Not sure yet</option>
+                  <option>I'll arrange my own (Uber, etc.)</option>
+                  <option>Interested in group transportation</option>
+                  <option>Need airport transfer info</option>
+                </select>
+              </div>
+            </div>
+
           </div>
 
           <div class="form-block">
@@ -133,16 +149,16 @@
             <p class="form-note">Song requests, questions, or just a hello — we read every note.</p>
           </div>
 
+          <button type="submit" class="btn btn-primary mt-2" style="width:100%; justify-content:center;">Send RSVP <span class="btn-arrow">→</span></button>
+        </form>
+
+        <div class="form-success" data-rsvp-success>
+          <div class="stamp">✓</div>
+          <h2>You're on the list.</h2>
+          <p class="lede text-center mt-2">Thank you for letting us know — we can't wait to celebrate with you in Mexico City. Check the Travel and Stay pages whenever you're ready to start planning your trip.</p>
+          <a href="travel.html" class="btn btn-outline mt-3">Start Planning Your Trip <span class="btn-arrow">→</span></a>
         </div>
 
-        <button type="submit" class="btn btn-primary mt-2" style="width:100%; justify-content:center;">Send RSVP <span class="btn-arrow">→</span></button>
-      </form>
-
-      <div class="form-success" data-rsvp-success>
-        <div class="stamp">✓</div>
-        <h2>You're on the list.</h2>
-        <p class="lede text-center mt-2">Thank you for letting us know — we can't wait to celebrate with you in Mexico City. Check the Travel and Stay pages whenever you're ready to start planning your trip.</p>
-        <a href="travel.html" class="btn btn-outline mt-3">Start Planning Your Trip <span class="btn-arrow">→</span></a>
       </div>
 
     </div>
@@ -180,8 +196,11 @@
   </div>
 </footer>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="assets/js/supabase-config.js"></script>
 <script src="assets/js/content.js"></script>
 <script src="assets/js/main.js"></script>
+<script src="assets/js/rsvp.js"></script>
 <script>
   document.getElementById('rsvp-deadline').textContent = WEDDING.rsvpDeadline;
   const mealSelect = document.getElementById('meal');
