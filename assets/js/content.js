@@ -89,7 +89,7 @@ const GOOD_TO_KNOW = [
   { title: "Electrical Outlets", body: "Same as the U.S. and Canada — Type A/B outlets, 127V. No adapter needed for most North American travelers." },
   { title: "Tipping", body: "Common and appreciated: around 10–15% at restaurants, and small tips for hotel staff, taxi/Uber drivers, and porters." },
   { title: "Drinking Water", body: "Stick to bottled or filtered water, which is what most hotels and restaurants serve automatically. Ice at reputable restaurants and hotels is generally made from purified water." },
-  { title: "Spanish", body: "Helpful but not required — English is widely spoken in the neighborhoods and hotels we recommend, and everyone appreciates a friendly 'gracias.'" },
+  { title: "Spanish", body: "Helpful but not required — English is widely spoken in the neighborhoods and hotels we recommend, and everyone appreciates a friendly 'gracias.' Don't worry, though: the ceremony itself will be in English, no pop quiz required." },
   { title: "Getting Around Safely", body: "Mexico City is a huge, modern, well-traveled capital, and the neighborhoods where we're spending time are safe, walkable, and popular with both locals and visitors. As anywhere, keep an eye on your belongings, stick to Uber or licensed taxis at night, and use normal city common sense." },
 ];
 
@@ -194,7 +194,7 @@ const FAQ = [
       { q: "Should I bring pesos?", a: "You don't need to bring cash from home — you'll get a better rate withdrawing pesos from an ATM once you land." },
       { q: "Should I tip?", a: "Yes — tipping is customary and appreciated. Around 10–15% at restaurants, and it's good practice to tip hotel staff, taxi/Uber drivers, and porters a bit as well." },
       { q: "What is the weather like in October?", a: "Mild and pleasant — sunny days in the low-to-mid 70s°F, cooler in the evenings. Pack a light layer for after dark." },
-      { q: "Do I need to speak Spanish?", a: "Not at all — English is widely spoken in the neighborhoods and hotels we're recommending, though locals always appreciate an attempted 'gracias.'" },
+      { q: "Do I need to speak Spanish?", a: "Not at all — English is widely spoken in the neighborhoods and hotels we're recommending, though locals always appreciate an attempted 'gracias.' And don't worry: the ceremony will be in English, so no pop quiz on the day." },
     ],
   },
   {
