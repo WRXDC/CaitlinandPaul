@@ -35,7 +35,7 @@
       <p class="gate-sub">Enter the password to continue.</p>
       <input type="password" class="gate-input" placeholder="Password" autocomplete="off">
       <button type="button" class="btn btn-primary gate-submit" style="width:100%; justify-content:center;">Enter <span class="btn-arrow">→</span></button>
-      <p class="gate-error" style="display:none;">That's not quite right — please try again.</p>
+      <p class="gate-error" style="display:none;">That's not quite right - please try again.</p>
     </div>
   `;
   document.body.appendChild(overlay);

@@ -4,8 +4,8 @@
 <meta charset="UTF-8">
 <script>if(localStorage.getItem('siteUnlocked')!=='true'){document.documentElement.style.visibility='hidden';}</script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Stay — Caitlin & Paul</title>
-<meta name="description" content="Where to stay in Mexico City for Caitlin and Paul's wedding — our room block at the InterContinental Presidente Mexico City in Polanco, plus a couple of other walkable nearby options.">
+<title>Stay - Caitlin & Paul</title>
+<meta name="description" content="Where to stay in Mexico City for Caitlin and Paul's wedding - our room block at the InterContinental Presidente Mexico City in Polanco, plus a couple of other walkable nearby options.">
 <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
@@ -112,7 +112,7 @@
           <span class="eyebrow">${n.name}</span>
           <h3 class="mt-1">Hotel pick in ${n.name}</h3>
         </div>
-        ${n.hotels.every(h => h.name === 'Hotel Name TBD') ? '<span class="needs-input">Placeholder hotels — add real links</span>' : ''}
+        ${n.hotels.every(h => h.name === 'Hotel Name TBD') ? '<span class="needs-input">Placeholder hotels - add real links</span>' : ''}
       </div>
       ${n.hotels.filter(h => h.roomBlock).map((h, j) => Render.hotelCard(h, n.name, i + j)).join('')}
       ${n.hotels.some(h => !h.roomBlock) ? `<div class="small-caps mt-3" style="color:var(--charcoal-50);">Other Nearby Options</div>` : ''}

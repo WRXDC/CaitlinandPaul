@@ -121,7 +121,7 @@
       if(error) throw error;
       if(!data || !data.found){
         setSearchMessage(data && data.multiple
-          ? "We found more than one invitation under that name — please reach out to us directly so we can sort it out."
+          ? "We found more than one invitation under that name - please reach out to us directly so we can sort it out."
           : "We couldn't find an invitation under that name. Double-check the spelling, or reach out to us directly.");
         return;
       }
