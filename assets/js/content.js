@@ -36,13 +36,6 @@ const WEEKEND_SCHEDULE = [
     label: "The Wedding",
     events: SCHEDULE,
   },
-  {
-    day: "Sunday, October 17",
-    label: "Farewell",
-    events: [
-      { time: "TBD", title: "Farewell Brunch", desc: "A relaxed send-off before you head home — or onward to explore more of the city. Location and timing TBD." },
-    ],
-  },
 ];
 
 const DRESS_CODE = {
@@ -110,13 +103,13 @@ const NEIGHBORHOODS = [
     name: "Polanco",
     vibe: "Where We're Staying",
     bestFor: "Everyone — it's where our room block and wedding-day shuttle are",
-    distance: "TBD from Casa Xipe",
     tone: "tone-3",
     img: "assets/img/polanco-neighborhood.jpg",
     description: "To keep things simple, we're recommending everyone stay in Polanco — Mexico City's most polished neighborhood, with wide tree-lined avenues, world-class restaurants, high-end shopping, and several great museums nearby. It's also where our wedding-day shuttle picks up and drops off, so staying here (or nearby) means you're covered.",
     hotels: [
-      { name: "InterContinental Presidente Mexico City", tier: "$$$", desc: "We've secured an affordable room block here for our guests — a large, reliable property right in the heart of Polanco. This is our main recommendation. We'll also be running a shuttle straight from here to Casa Xipe and back on the wedding day.", distance: "TBD", roomBlock: true, img: "assets/img/hotel-intercontinental-presidente.jpg" },
-      { name: "Residence L'Heritage Tennyson by BlueBay", tier: "$$", desc: "A more affordable apartment-style option a short walk from the InterContinental. You can still meet up with everyone there to catch the shuttle.", distance: "TBD", img: "assets/img/hotel-residence-lheritage.jpg" },
+      { name: "InterContinental Presidente Mexico City", tier: "$$$", desc: "We've secured an affordable room block here for our guests — a large, reliable property right in the heart of Polanco. This is our main recommendation. We'll also be running a shuttle straight from here to Casa Xipe and back on the wedding day.", roomBlock: true, img: "assets/img/hotel-intercontinental-presidente.jpg" },
+      { name: "Hyatt Regency Mexico City", tier: "$$–$$$", desc: "A polished, full-service hotel just up the block from the InterContinental on Campos Elíseos — a nice middle ground between our room block and the more budget-friendly option below. A couple minutes' walk to catch the wedding shuttle.", img: "assets/img/hotel-hyatt-regency.jpg" },
+      { name: "Residence L'Heritage Tennyson by BlueBay", tier: "$$", desc: "A more affordable apartment-style option a short walk from the InterContinental. You can still meet up with everyone there to catch the shuttle.", img: "assets/img/hotel-residence-lheritage.jpg" },
     ],
   },
 ];
@@ -186,7 +179,7 @@ const FAQ = [
   {
     category: "Staying & Getting Around",
     items: [
-      { q: "Where should I stay?", a: "We've secured an affordable room block at the InterContinental Presidente Mexico City in Polanco, and that's our one recommendation — it keeps everyone in the same place and it's where our wedding-day shuttle picks up. If you'd like something more affordable nearby, Residence L'Heritage Tennyson by BlueBay is a short walk away and still puts you in range of the shuttle — see our Stay page for details." },
+      { q: "Where should I stay?", a: "We've secured an affordable room block at the InterContinental Presidente Mexico City in Polanco, and that's our main recommendation — it keeps everyone in the same place and it's where our wedding-day shuttle picks up. If you'd like a nearby alternative, the Hyatt Regency Mexico City is a couple minutes' walk away, or for something more affordable, Residence L'Heritage Tennyson by BlueBay is also a short walk — both still put you in range of the shuttle. See our Stay page for details." },
       { q: "How many days should I stay?", a: "We'd suggest at least 3–4 nights if you can swing it — enough time to enjoy the wedding weekend and still explore the city a bit." },
       { q: "Is Mexico City safe?", a: "Yes — it's a huge, modern capital city, and the neighborhoods we're recommending are safe, walkable, and popular with visitors. Normal city precautions apply, as they would in any major city." },
       { q: "Should I rent a car?", a: "Please don't — parking is extremely difficult in Mexico City, and traffic can be a lot to deal with. Get around using Uber instead. It's safe and inexpensive, and available nearly everywhere you'll be." },
@@ -227,4 +220,4 @@ const FAQ = [
 /* -------------------------------------------------------------------- */
 
 const MEAL_OPTIONS = ["Select a meal", "Beef", "Fish", "Vegetarian", "Vegan", "Kids' Menu"];
-const HOTEL_OPTIONS = ["Select a hotel / not yet booked", "InterContinental Presidente Mexico City (room block)", "Residence L'Heritage Tennyson by BlueBay", "Other hotel near the InterContinental", "Other / not staying near the InterContinental"];
+const HOTEL_OPTIONS = ["Select a hotel / not yet booked", "InterContinental Presidente Mexico City (room block)", "Hyatt Regency Mexico City", "Residence L'Heritage Tennyson by BlueBay", "Other hotel near the InterContinental", "Other / not staying near the InterContinental"];

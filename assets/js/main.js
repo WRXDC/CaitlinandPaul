@@ -203,9 +203,6 @@ const Render = {
         <div class="neigh-tags">
           <span class="tag">Best for: ${n.bestFor}</span>
         </div>
-        <div class="neigh-meta">
-          <div><span class="label">Distance to Casa Xipe</span><span class="value">${n.distance}</span></div>
-        </div>
       </div>
     </div>`;
   },
@@ -231,7 +228,7 @@ const Render = {
         </div>
         <p>${hotel.desc}</p>
         <div class="hotel-card-foot">
-          <span class="dist-note">${hotel.distance} to Casa Xipe · ${neighborhoodName}</span>
+          <span class="dist-note">${neighborhoodName}</span>
           ${bookLink}
         </div>
       </div>
