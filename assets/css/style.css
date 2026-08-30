@@ -303,6 +303,11 @@ p{ color:var(--charcoal-70); max-width:60ch; }
 @media (max-width:900px){ #must-do-wrap > *{ flex:0 0 calc((100% - 28px)/2); } }
 @media (max-width:640px){ #must-do-wrap > *{ flex:0 0 100%; } }
 
+/* #day-trips-wrap currently has a single item in a 2-col grid; center it instead of left-aligning */
+#day-trips-wrap{ display:flex; justify-content:center; }
+#day-trips-wrap > *{ flex:0 0 calc((100% - 28px)/2); }
+@media (max-width:640px){ #day-trips-wrap > *{ flex:0 0 100%; } }
+
 .info-card{
   background:var(--paper); border:1px solid var(--line); padding:34px 30px; border-radius:var(--radius-sm);
   transition:transform .4s cubic-bezier(.22,.68,0,1), box-shadow .4s ease, border-color .4s ease;

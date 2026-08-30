@@ -130,8 +130,6 @@ const NEIGHBORHOODS_EXPLORE = [
   { name: "Condesa", desc: "Leafy, Art Deco, endlessly strollable - a favorite for a slow morning walk." },
   { name: "Roma Norte", desc: "Design, food, and natural wine - the city's creative center of gravity right now." },
   { name: "Polanco", desc: "Polished and upscale, with some of the city's best fine dining." },
-  { name: "Coyoacán", desc: "Cobblestone streets, colorful colonial buildings, and a lively central market." },
-  { name: "Juárez", desc: "Quietly one of the best-kept secrets - great bars and restaurants without the crowds." },
 ];
 
 const FOOD_AND_DRINK = [
@@ -147,8 +145,6 @@ const FOOD_AND_DRINK = [
 const DAY_TRIPS = [
   { name: "Teotihuacán", desc: "Ancient pyramids about an hour outside the city - go early to beat the heat and crowds.", time: "Half day" },
   { name: "Xochimilco", desc: "Colorful gondola-style boats (trajineras) through historic canals - lively, festive, best with a group.", time: "Half day" },
-  { name: "Puebla", desc: "A beautiful colonial city about two hours away, known for its architecture and mole poblano.", time: "Full day" },
-  { name: "Valle de Bravo", desc: "A lakeside mountain town popular with weekending Chilangos - a quieter, scenic escape.", time: "Full day" },
 ];
 
 const FAVORITES = {
