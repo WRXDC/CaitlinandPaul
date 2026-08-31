@@ -43,6 +43,22 @@
 
   const submitBtn = rsvpForm.querySelector('button[type="submit"]');
   const successEl = document.querySelector('[data-rsvp-success]');
+  const successHeading = document.querySelector('[data-success-heading]');
+  const successBody = document.querySelector('[data-success-body]');
+  const successCta = document.querySelector('[data-success-cta]');
+
+  const SUCCESS_COPY = {
+    attending: {
+      heading: "You're on the list.",
+      body: "Thank you for letting us know - we can't wait to celebrate with you in Mexico City. Check the Travel and Stay pages whenever you're ready to start planning your trip.",
+      showCta: true,
+    },
+    declined: {
+      heading: "We'll miss you.",
+      body: "Thank you for letting us know - we're sorry you can't make it, but we really appreciate you taking the time to respond.",
+      showCta: false,
+    },
+  };
 
   let currentMembers = null; // [{ guestId, firstName, lastName }]
 
@@ -409,6 +425,15 @@
       .filter(x => x.result.status === 'rejected');
 
     if(failed.length === 0){
+      // If even one member of the household is attending, this is still a
+      // celebration - only show the "we'll miss you" copy when everyone
+      // who just submitted declined.
+      const anyAttending = currentMembers.some(member => formData.get(`attending-${member.guestId}`) === 'yes');
+      const copy = anyAttending ? SUCCESS_COPY.attending : SUCCESS_COPY.declined;
+      if(successHeading) successHeading.textContent = copy.heading;
+      if(successBody) successBody.textContent = copy.body;
+      if(successCta) successCta.style.display = copy.showCta ? '' : 'none';
+
       rsvpForm.style.display = 'none';
       if(foundBanner) foundBanner.style.display = 'none';
       successEl.classList.add('is-visible');
