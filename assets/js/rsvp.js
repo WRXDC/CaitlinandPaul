@@ -156,18 +156,41 @@
       <div class="form-block">
         <label for="notes-${m.guestId}">Additional Notes</label>
         <textarea id="notes-${m.guestId}" name="notes-${m.guestId}" placeholder="Anything else we should know">${existing && existing.notes ? existing.notes : ''}</textarea>
-        <p class="form-note">Song requests, questions, or just a hello - we read every note.</p>
+        <p class="form-note" data-notes-hint>Song requests, questions, or just a hello - we read every note.</p>
       </div>
     </div>`;
+  }
+
+  const NOTES_COPY = {
+    yes: { placeholder: 'Anything else we should know', hint: "Song requests, questions, or just a hello - we read every note." },
+    no: { placeholder: "We'll miss you - anything you'd like to share?", hint: "Sorry we'll miss you! Let us know if there's anything you'd like us to know." },
+  };
+
+  function syncNotes(card, attendingYes){
+    const guestId = card.dataset.guestId;
+    const textarea = card.querySelector(`#notes-${guestId}`);
+    const hint = card.querySelector('[data-notes-hint]');
+    const copy = attendingYes ? NOTES_COPY.yes : NOTES_COPY.no;
+    if(textarea) textarea.placeholder = copy.placeholder;
+    if(hint) hint.textContent = copy.hint;
   }
 
   function syncAttending(card){
     const guestId = card.dataset.guestId;
     const checked = card.querySelector(`input[name="attending-${guestId}"]:checked`);
+    const attendingYes = !!(checked && checked.value === 'yes');
     const conditionalFields = card.querySelector('[data-attending-fields]');
     if(conditionalFields){
-      conditionalFields.style.display = (checked && checked.value === 'yes') ? '' : 'none';
+      conditionalFields.style.display = attendingYes ? '' : 'none';
     }
+    // CSS display:none does NOT exempt a field from constraint validation -
+    // only removing `required` does. Without this, declining attendance left
+    // the hidden meal select still required, so the browser silently blocked
+    // submission on a field it couldn't even show the user.
+    const meal = card.querySelector(`#meal-${guestId}`);
+    if(meal) meal.required = attendingYes;
+    syncPlusOne(card);
+    syncNotes(card, attendingYes);
   }
 
   // A plus-one's meal/dietary fields only appear (and meal is only required)
@@ -179,7 +202,9 @@
     const fields = card.querySelector('[data-plus-one-fields]');
     const mealSelect = card.querySelector(`#plusOneMeal-${guestId}`);
     if(!nameInput || !fields) return;
-    const hasName = nameInput.value.trim().length > 0;
+    const attending = card.querySelector(`input[name="attending-${guestId}"]:checked`);
+    const attendingYes = !!(attending && attending.value === 'yes');
+    const hasName = attendingYes && nameInput.value.trim().length > 0;
     fields.style.display = hasName ? '' : 'none';
     if(mealSelect) mealSelect.required = hasName;
   }
