@@ -7,7 +7,9 @@
    A search returns every guest in the searched person's household (see
    find_invitation in supabase/functions.sql) - one member card per person is
    rendered into the form, and submitting sends one submit_rsvp call per
-   member, so a whole party can RSVP in a single visit.
+   member, so a whole party can RSVP in a single visit. For parties of more
+   than one, a sticky pill nav lets you jump between members and see at a
+   glance who's been filled out.
    ========================================================================== */
 (function(){
 
@@ -36,6 +38,7 @@
   const foundName = document.querySelector('[data-found-name]');
   const foundHousehold = document.querySelector('[data-found-household]');
   const foundBanner = document.querySelector('[data-found-banner]');
+  const membersNav = document.querySelector('[data-members-nav]');
   const membersWrap = document.querySelector('[data-members-wrap]');
 
   const submitBtn = rsvpForm.querySelector('button[type="submit"]');
@@ -52,13 +55,12 @@
   // The placeholder is a real disabled option with an empty value, paired
   // with `required` on the <select> - so an attending guest can't silently
   // submit with the meal left on "Select a meal".
-  function mealOptionsHtml(selected){
-    const options = MEAL_OPTIONS.map((m, i) => {
+  function mealOptionsHtml(selected, required){
+    return MEAL_OPTIONS.map((m, i) => {
       const isPlaceholder = i === 0;
       const isSelected = selected ? m === selected : isPlaceholder;
       return `<option value="${isPlaceholder ? '' : m}" ${isPlaceholder ? 'disabled' : ''} ${isSelected ? 'selected' : ''}>${m}</option>`;
     }).join('');
-    return options;
   }
 
   // Unlike meal, "not yet booked" (the first option) is a legitimate answer,
@@ -71,15 +73,19 @@
     }).join('');
   }
 
-  function memberCardHtml(m){
+  function memberCardHtml(m, index, total){
     const existing = m.existingRsvp;
     const attendingYes = existing ? existing.attending : true;
     const welcomePartyYes = existing && existing.welcomeParty === true;
     const welcomePartyNo = !existing || existing.welcomeParty === false;
+    const hasPlusOne = existing && existing.guestName;
 
     return `
-    <div class="rsvp-member" data-member-card data-guest-id="${m.guestId}" style="padding-top:28px; margin-top:28px; border-top:1px solid var(--line);">
-      <h3 style="margin-bottom:16px;">${m.firstName} ${m.lastName}</h3>
+    <div class="rsvp-member" data-member-card data-guest-id="${m.guestId}" id="member-${m.guestId}">
+      <div class="rsvp-member-head">
+        ${total > 1 ? `<span class="rsvp-member-num">${index + 1} of ${total}</span>` : ''}
+        <h3>${m.firstName} ${m.lastName}</h3>
+      </div>
 
       <div class="form-block">
         <label>Will ${m.firstName} be joining us?</label>
@@ -97,15 +103,9 @@
 
       <div data-attending-fields>
 
-        ${m.invitedPlusOne ? `
-        <div class="form-block">
-          <label for="guestName-${m.guestId}">Guest Name <span style="text-transform:none; letter-spacing:0;">(if bringing someone)</span></label>
-          <input type="text" id="guestName-${m.guestId}" name="guestName-${m.guestId}" value="${existing && existing.guestName ? existing.guestName : ''}">
-        </div>` : ''}
-
         <div class="form-block">
           <label for="meal-${m.guestId}">Meal Selection</label>
-          <select id="meal-${m.guestId}" name="meal-${m.guestId}" required>${mealOptionsHtml(existing && existing.meal)}</select>
+          <select id="meal-${m.guestId}" name="meal-${m.guestId}" required data-track>${mealOptionsHtml(existing && existing.meal)}</select>
         </div>
 
         <div class="form-block">
@@ -133,6 +133,24 @@
           <p class="form-note">Haven't booked yet? Pick "not yet booked" - you can always come back and update this once you have.</p>
         </div>
 
+        ${m.invitedPlusOne ? `
+        <div class="rsvp-plus-one" data-plus-one-block>
+          <div class="form-block">
+            <label for="guestName-${m.guestId}">Bringing a Guest? <span style="text-transform:none; letter-spacing:0;">(optional - enter their name)</span></label>
+            <input type="text" id="guestName-${m.guestId}" name="guestName-${m.guestId}" data-track placeholder="Their name" value="${existing && existing.guestName ? existing.guestName : ''}">
+          </div>
+          <div data-plus-one-fields style="display:${hasPlusOne ? '' : 'none'};">
+            <div class="form-block">
+              <label for="plusOneMeal-${m.guestId}">Their Meal Selection</label>
+              <select id="plusOneMeal-${m.guestId}" name="plusOneMeal-${m.guestId}" data-track>${mealOptionsHtml(existing && existing.plusOneMeal)}</select>
+            </div>
+            <div class="form-block">
+              <label for="plusOneDietary-${m.guestId}">Their Dietary Restrictions</label>
+              <textarea id="plusOneDietary-${m.guestId}" name="plusOneDietary-${m.guestId}" placeholder="Allergies, preferences, anything we should know">${existing && existing.plusOneDietary ? existing.plusOneDietary : ''}</textarea>
+            </div>
+          </div>
+        </div>` : ''}
+
       </div>
 
       <div class="form-block">
@@ -152,12 +170,77 @@
     }
   }
 
+  // A plus-one's meal/dietary fields only appear (and meal is only required)
+  // once a name has actually been entered - otherwise "bringing a guest" is
+  // left blank and there's nothing to force a meal choice for.
+  function syncPlusOne(card){
+    const guestId = card.dataset.guestId;
+    const nameInput = card.querySelector(`#guestName-${guestId}`);
+    const fields = card.querySelector('[data-plus-one-fields]');
+    const mealSelect = card.querySelector(`#plusOneMeal-${guestId}`);
+    if(!nameInput || !fields) return;
+    const hasName = nameInput.value.trim().length > 0;
+    fields.style.display = hasName ? '' : 'none';
+    if(mealSelect) mealSelect.required = hasName;
+  }
+
+  // Marks a member's nav pill "done" once their attending decision - and,
+  // if attending, a real meal choice (and their plus-one's, if named) - is
+  // actually made, so the pills double as an at-a-glance progress tracker.
+  function updateNavState(card){
+    const guestId = card.dataset.guestId;
+    const pill = membersNav && membersNav.querySelector(`[data-nav-for="${guestId}"]`);
+    if(!pill) return;
+    const attending = card.querySelector(`input[name="attending-${guestId}"]:checked`);
+    let done = !!attending;
+    if(attending && attending.value === 'yes'){
+      const meal = card.querySelector(`#meal-${guestId}`);
+      done = !!(meal && meal.value);
+      const plusOneMeal = card.querySelector(`#plusOneMeal-${guestId}`);
+      if(plusOneMeal && plusOneMeal.required){
+        done = done && !!plusOneMeal.value;
+      }
+    }
+    pill.classList.toggle('is-done', done);
+  }
+
   function wireCard(card){
     const guestId = card.dataset.guestId;
     card.querySelectorAll(`input[name="attending-${guestId}"]`).forEach(r => {
-      r.addEventListener('change', () => syncAttending(card));
+      r.addEventListener('change', () => { syncAttending(card); updateNavState(card); });
     });
     syncAttending(card);
+
+    const nameInput = card.querySelector(`#guestName-${guestId}`);
+    if(nameInput){
+      nameInput.addEventListener('input', () => { syncPlusOne(card); updateNavState(card); });
+      syncPlusOne(card);
+    }
+
+    card.querySelectorAll('[data-track]').forEach(el => {
+      el.addEventListener('change', () => updateNavState(card));
+    });
+
+    updateNavState(card);
+  }
+
+  function membersNavHtml(members){
+    if(members.length <= 1) return '';
+    return members.map(m => `
+      <button type="button" class="member-nav-pill" data-nav-for="${m.guestId}">
+        <span class="member-nav-check"></span>${m.firstName}
+      </button>
+    `).join('');
+  }
+
+  function wireNav(){
+    if(!membersNav) return;
+    membersNav.querySelectorAll('[data-nav-for]').forEach(pill => {
+      pill.addEventListener('click', () => {
+        const card = document.getElementById(`member-${pill.dataset.navFor}`);
+        if(card) card.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
+    });
   }
 
   function showFoundStep(invitation){
@@ -184,8 +267,10 @@
       }
     }
 
-    membersWrap.innerHTML = invitation.members.map(memberCardHtml).join('');
+    if(membersNav) membersNav.innerHTML = membersNavHtml(invitation.members);
+    membersWrap.innerHTML = invitation.members.map((m, i) => memberCardHtml(m, i, invitation.members.length)).join('');
     membersWrap.querySelectorAll('[data-member-card]').forEach(wireCard);
+    wireNav();
 
     submitBtn.textContent = invitation.members.some(m => m.existingRsvp) ? 'Update RSVP' : 'Send RSVP';
 
@@ -281,6 +366,8 @@
         p_guest_name: formData.get(`guestName-${id}`) || null,
         p_meal: formData.get(`meal-${id}`) || null,
         p_dietary: formData.get(`dietary-${id}`) || null,
+        p_plus_one_meal: formData.get(`plusOneMeal-${id}`) || null,
+        p_plus_one_dietary: formData.get(`plusOneDietary-${id}`) || null,
         p_welcome_party: welcomeParty,
         p_hotel: formData.get(`hotel-${id}`) || null,
         p_notes: formData.get(`notes-${id}`) || null,

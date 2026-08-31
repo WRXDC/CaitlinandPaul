@@ -52,6 +52,8 @@ create table if not exists public.rsvps (
   guest_name              text,
   meal                    text,
   dietary                 text,
+  plus_one_meal           text,
+  plus_one_dietary        text,
   welcome_party           boolean,
   hotel                   text,
   notes                   text,
@@ -62,11 +64,15 @@ create table if not exists public.rsvps (
 
 -- Migrate an existing (pre-redesign) rsvps table to the current shape:
 -- drop the arrival/departure/transportation fields we no longer ask for,
--- and add welcome_party for the new Friday welcome-party question.
+-- add welcome_party for the Friday welcome-party question, and give a
+-- plus-one their own meal/dietary answers instead of sharing the inviting
+-- guest's.
 alter table public.rsvps drop column if exists arrival;
 alter table public.rsvps drop column if exists departure;
 alter table public.rsvps drop column if exists transportation_needs;
 alter table public.rsvps add column if not exists welcome_party boolean;
+alter table public.rsvps add column if not exists plus_one_meal text;
+alter table public.rsvps add column if not exists plus_one_dietary text;
 
 -- ---------------------------------------------------------------------
 -- Row Level Security

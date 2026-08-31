@@ -79,7 +79,7 @@
   async function loadData(){
     const { data, error } = await supabaseClient
       .from('guests')
-      .select('id, first_name, last_name, household, invited_plus_one, plus_one_name, rsvps(attending, guest_name, meal, dietary, welcome_party, hotel, notes, updated_at)')
+      .select('id, first_name, last_name, household, invited_plus_one, plus_one_name, rsvps(attending, guest_name, meal, dietary, plus_one_meal, plus_one_dietary, welcome_party, hotel, notes, updated_at)')
       .order('household', { ascending: true, nullsFirst: false })
       .order('last_name', { ascending: true });
 
@@ -129,6 +129,16 @@
     return rsvp.welcome_party ? 'Yes' : 'No';
   }
 
+  // Appends the plus-one's answer (if any) under the guest's own, e.g.
+  // "Salmon" then "+1: Chicken Mole" on its own line within the same cell.
+  function withPlusOne(value, plusOneValue){
+    if(!value && !plusOneValue) return '';
+    const lines = [];
+    if(value) lines.push(escapeHtml(value));
+    if(plusOneValue) lines.push(`<span class="small-caps" style="color:var(--charcoal-50);">+1: ${escapeHtml(plusOneValue)}</span>`);
+    return lines.join('<br>');
+  }
+
   function renderTable(){
     const filtered = getFiltered();
     emptyMessage.style.display = filtered.length ? 'none' : 'block';
@@ -145,8 +155,8 @@
         <td>${escapeHtml(name)}</td>
         <td>${isNewGroup ? escapeHtml(g.household) : ''}</td>
         <td><span class="status-badge status-${r.status}">${statusLabel(r.status)}</span></td>
-        <td>${escapeHtml(rsvp && rsvp.meal)}</td>
-        <td>${escapeHtml(rsvp && rsvp.dietary)}</td>
+        <td>${withPlusOne(rsvp && rsvp.meal, rsvp && rsvp.plus_one_meal)}</td>
+        <td>${withPlusOne(rsvp && rsvp.dietary, rsvp && rsvp.plus_one_dietary)}</td>
         <td>${escapeHtml(welcomePartyLabel(rsvp))}</td>
         <td>${escapeHtml(rsvp && rsvp.hotel)}</td>
         <td>${escapeHtml(rsvp && rsvp.notes)}</td>
@@ -164,13 +174,14 @@
 
   exportBtn.addEventListener('click', () => {
     const filtered = getFiltered();
-    const headers = ['First Name','Last Name','Household','Status','Guest Name','Meal','Dietary','Welcome Party','Hotel','Notes'];
+    const headers = ['First Name','Last Name','Household','Status','Guest Name','Meal','Dietary','Guest Meal','Guest Dietary','Welcome Party','Hotel','Notes'];
     const lines = [headers.join(',')];
     filtered.forEach(r => {
       const g = r.guest, rsvp = r.rsvp;
       lines.push([
         g.first_name, g.last_name, g.household || '', statusLabel(r.status),
         (rsvp && rsvp.guest_name) || '', (rsvp && rsvp.meal) || '', (rsvp && rsvp.dietary) || '',
+        (rsvp && rsvp.plus_one_meal) || '', (rsvp && rsvp.plus_one_dietary) || '',
         welcomePartyLabel(rsvp), (rsvp && rsvp.hotel) || '', (rsvp && rsvp.notes) || '',
       ].map(csvEscape).join(','));
     });

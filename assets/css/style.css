@@ -448,6 +448,51 @@ textarea{ min-height:110px; resize:vertical; }
 .form-note{ font-size:.82rem; color:var(--charcoal-50); margin-top:8px; }
 .rsvp-shell{ background:var(--paper); border:1px solid var(--line); border-radius:var(--radius-md); padding:clamp(28px,5vw,60px); box-shadow:0 40px 80px -50px rgba(36,31,25,.4); }
 .deadline-strip{ display:flex; align-items:center; gap:14px; background:var(--clay-tint); border-radius:2px; padding:16px 20px; margin-bottom:40px; font-size:.92rem; }
+
+/* RSVP household - jump nav + per-member cards, so a large party stays easy
+   to track instead of one long undifferentiated scroll. */
+.rsvp-members-nav{
+  position:sticky; top:var(--nav-h); z-index:10;
+  display:flex; flex-wrap:wrap; gap:8px;
+  padding:16px 0; margin-bottom:10px;
+  background:var(--paper);
+  border-bottom:1px solid var(--line);
+}
+.member-nav-pill{
+  display:inline-flex; align-items:center; gap:8px;
+  padding:9px 18px 9px 10px; border-radius:30px;
+  border:1px solid var(--line-strong); background:var(--paper);
+  font-family:var(--font-mono); font-size:.72rem; letter-spacing:.06em; text-transform:uppercase;
+  color:var(--charcoal-70); cursor:pointer; transition:all .25s ease;
+}
+.member-nav-pill:hover{ border-color:var(--clay); color:var(--charcoal); }
+.member-nav-pill.is-active{ border-color:var(--charcoal); color:var(--charcoal); }
+.member-nav-check{
+  display:inline-flex; align-items:center; justify-content:center; flex-shrink:0;
+  width:18px; height:18px; border-radius:50%;
+  border:1px solid var(--line-strong); font-size:.62rem; color:transparent;
+  transition:all .25s ease;
+}
+.member-nav-pill.is-done .member-nav-check{
+  background:var(--green); border-color:var(--green); color:var(--paper);
+}
+.member-nav-pill.is-done .member-nav-check::before{ content:'✓'; }
+
+.rsvp-member{
+  background:var(--clay-tint); border-radius:var(--radius-md);
+  padding:clamp(22px,4vw,34px); margin-top:24px;
+  scroll-margin-top:calc(var(--nav-h) + 76px);
+}
+.rsvp-member:first-child{ margin-top:0; }
+.rsvp-member-head{ display:flex; align-items:baseline; gap:12px; margin-bottom:20px; flex-wrap:wrap; }
+.rsvp-member-num{ font-family:var(--font-mono); font-size:.7rem; letter-spacing:.1em; text-transform:uppercase; color:var(--clay-dark); }
+.rsvp-member-head h3{ margin:0; }
+
+.rsvp-plus-one{
+  margin-top:10px; padding:20px clamp(18px,3vw,26px) 6px;
+  border-left:2px solid var(--line-strong);
+  background:rgba(251,247,238,.5);
+}
 .form-success{ display:none; text-align:center; padding:60px 20px; }
 .form-success.is-visible{ display:block; }
 .form-success .stamp{ width:80px; height:80px; border:2px solid var(--green); border-radius:50%; display:flex; align-items:center; justify-content:center; margin:0 auto 26px; font-family:var(--font-display); font-size:2rem; color:var(--green); transform:rotate(-8deg); }

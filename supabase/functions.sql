@@ -63,6 +63,8 @@ begin
         'guestName', r.guest_name,
         'meal', r.meal,
         'dietary', r.dietary,
+        'plusOneMeal', r.plus_one_meal,
+        'plusOneDietary', r.plus_one_dietary,
         'welcomeParty', r.welcome_party,
         'hotel', r.hotel,
         'notes', r.notes
@@ -107,6 +109,8 @@ create or replace function public.submit_rsvp(
   p_guest_name text,
   p_meal text,
   p_dietary text,
+  p_plus_one_meal text,
+  p_plus_one_dietary text,
   p_welcome_party boolean,
   p_hotel text,
   p_notes text
@@ -117,6 +121,7 @@ set search_path = public
 as $$
 declare
   v_guest guests%rowtype;
+  v_has_plus_one boolean;
 begin
   select * into v_guest from guests where id = p_guest_id;
 
@@ -126,15 +131,21 @@ begin
     raise exception 'Invitation not found';
   end if;
 
+  -- Plus-one fields only make sense if this guest is attending AND actually
+  -- named someone they're bringing.
+  v_has_plus_one := p_attending and p_guest_name is not null and trim(p_guest_name) <> '';
+
   insert into rsvps (
     guest_id, attending, guest_name, meal, dietary,
-    welcome_party, hotel, notes,
+    plus_one_meal, plus_one_dietary, welcome_party, hotel, notes,
     submitted_at, updated_at
   ) values (
     v_guest.id, p_attending,
     case when p_attending then p_guest_name else null end,
     case when p_attending then p_meal else null end,
     case when p_attending then p_dietary else null end,
+    case when v_has_plus_one then p_plus_one_meal else null end,
+    case when v_has_plus_one then p_plus_one_dietary else null end,
     case when p_attending then p_welcome_party else null end,
     case when p_attending then p_hotel else null end,
     p_notes,
@@ -145,6 +156,8 @@ begin
     guest_name = excluded.guest_name,
     meal = excluded.meal,
     dietary = excluded.dietary,
+    plus_one_meal = excluded.plus_one_meal,
+    plus_one_dietary = excluded.plus_one_dietary,
     welcome_party = excluded.welcome_party,
     hotel = excluded.hotel,
     notes = excluded.notes,
@@ -154,10 +167,10 @@ begin
 end;
 $$;
 
-revoke all on function public.submit_rsvp(uuid, text, text, boolean, text, text, text, boolean, text, text) from public;
-grant execute on function public.submit_rsvp(uuid, text, text, boolean, text, text, text, boolean, text, text) to anon, authenticated;
+revoke all on function public.submit_rsvp(uuid, text, text, boolean, text, text, text, text, text, boolean, text, text) from public;
+grant execute on function public.submit_rsvp(uuid, text, text, boolean, text, text, text, text, text, boolean, text, text) to anon, authenticated;
 
--- Drop the old function signature from before this redesign (arrival/
--- departure/transportation_needs params), so Postgres doesn't keep two
--- overloads around after you re-run this file.
+-- Drop old function signatures from before this redesign, so Postgres
+-- doesn't keep stale overloads around after you re-run this file.
 drop function if exists public.submit_rsvp(uuid, text, text, boolean, text, text, text, date, date, text, text, text);
+drop function if exists public.submit_rsvp(uuid, text, text, boolean, text, text, text, boolean, text, text);
