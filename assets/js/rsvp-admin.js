@@ -153,7 +153,7 @@
       const groupStyle = isNewGroup ? ' style="border-top:2px solid var(--line-strong);"' : '';
       return `<tr${groupStyle}>
         <td>${escapeHtml(name)}</td>
-        <td>${isNewGroup ? escapeHtml(g.household) : ''}</td>
+        <td>${escapeHtml(g.household)}</td>
         <td><span class="status-badge status-${r.status}">${statusLabel(r.status)}</span></td>
         <td>${withPlusOne(rsvp && rsvp.meal, rsvp && rsvp.plus_one_meal)}</td>
         <td>${withPlusOne(rsvp && rsvp.dietary, rsvp && rsvp.plus_one_dietary)}</td>
