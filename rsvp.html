@@ -57,6 +57,14 @@
         <strong id="rsvp-deadline"></strong>
       </div>
 
+      <div data-rsvp-locked style="display:none;">
+        <div class="form-block">
+          <span class="small-caps" style="color:var(--clay-dark);">RSVP deadline passed</span>
+          <h3 class="mt-1">The RSVP deadline has passed.</h3>
+          <p class="mt-1">If your plans have changed or you still need to let us know, please reach out to us directly rather than submitting here.</p>
+        </div>
+      </div>
+
       <div data-rsvp-search>
         <div class="form-row form-block">
           <div>
@@ -139,7 +147,7 @@
 <script src="assets/js/site-gate.js"></script>
 <script src="assets/js/rsvp.js"></script>
 <script>
-  document.getElementById('rsvp-deadline').textContent = WEDDING.rsvpDeadline;
+  document.getElementById('rsvp-deadline').textContent = WEDDING.rsvpDeadline.display;
 </script>
 </body>
 </html>

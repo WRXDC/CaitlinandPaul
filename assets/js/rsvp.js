@@ -14,7 +14,19 @@
   const searchStep = document.querySelector('[data-rsvp-search]');
   const foundStep = document.querySelector('[data-rsvp-found]');
   const rsvpForm = document.querySelector('[data-rsvp-form]');
+  const lockedStep = document.querySelector('[data-rsvp-locked]');
   if(!searchStep || !foundStep || !rsvpForm) return;
+
+  // Past the deadline, lock the form instead of silently accepting (or
+  // silently rejecting) late changes - guests are pointed to contact you
+  // directly instead.
+  const deadlinePassed = new Date() > new Date(WEDDING.rsvpDeadline.iso + 'T23:59:59');
+  if(deadlinePassed){
+    searchStep.style.display = 'none';
+    foundStep.style.display = 'none';
+    if(lockedStep) lockedStep.style.display = '';
+    return;
+  }
 
   const firstNameInput = document.getElementById('searchFirstName');
   const lastNameInput = document.getElementById('searchLastName');
@@ -37,19 +49,25 @@
     searchMessage.style.display = text ? 'block' : 'none';
   }
 
+  // The placeholder is a real disabled option with an empty value, paired
+  // with `required` on the <select> - so an attending guest can't silently
+  // submit with the meal left on "Select a meal".
   function mealOptionsHtml(selected){
-    return MEAL_OPTIONS.map((m, i) => {
+    const options = MEAL_OPTIONS.map((m, i) => {
       const isPlaceholder = i === 0;
       const isSelected = selected ? m === selected : isPlaceholder;
-      return `<option value="${m}" ${isPlaceholder ? 'disabled' : ''} ${isSelected ? 'selected' : ''}>${m}</option>`;
+      return `<option value="${isPlaceholder ? '' : m}" ${isPlaceholder ? 'disabled' : ''} ${isSelected ? 'selected' : ''}>${m}</option>`;
     }).join('');
+    return options;
   }
 
+  // Unlike meal, "not yet booked" (the first option) is a legitimate answer,
+  // not just a placeholder - it stays enabled so it can actually be picked,
+  // and the field isn't required.
   function hotelOptionsHtml(selected){
     return HOTEL_OPTIONS.map((h, i) => {
-      const isPlaceholder = i === 0;
-      const isSelected = selected ? h === selected : isPlaceholder;
-      return `<option value="${h}" ${isPlaceholder ? 'disabled' : ''} ${isSelected ? 'selected' : ''}>${h}</option>`;
+      const isSelected = selected ? h === selected : i === 0;
+      return `<option value="${h}" ${isSelected ? 'selected' : ''}>${h}</option>`;
     }).join('');
   }
 
@@ -87,7 +105,7 @@
 
         <div class="form-block">
           <label for="meal-${m.guestId}">Meal Selection</label>
-          <select id="meal-${m.guestId}" name="meal-${m.guestId}">${mealOptionsHtml(existing && existing.meal)}</select>
+          <select id="meal-${m.guestId}" name="meal-${m.guestId}" required>${mealOptionsHtml(existing && existing.meal)}</select>
         </div>
 
         <div class="form-block">
@@ -248,36 +266,45 @@
     submitBtn.disabled = true;
     submitBtn.textContent = 'Sending…';
 
-    try {
-      for(const member of currentMembers){
-        const id = member.guestId;
-        const attending = formData.get(`attending-${id}`) === 'yes';
-        const welcomeParty = formData.get(`welcomeParty-${id}`) === 'yes';
-        const { error } = await supabaseClient.rpc('submit_rsvp', {
-          p_guest_id: id,
-          p_first_name: member.firstName,
-          p_last_name: member.lastName,
-          p_attending: attending,
-          p_guest_name: formData.get(`guestName-${id}`) || null,
-          p_meal: formData.get(`meal-${id}`) || null,
-          p_dietary: formData.get(`dietary-${id}`) || null,
-          p_welcome_party: welcomeParty,
-          p_hotel: formData.get(`hotel-${id}`) || null,
-          p_notes: formData.get(`notes-${id}`) || null,
-        });
-        if(error) throw error;
-      }
+    // Attempt every household member's RSVP even if one fails, rather than
+    // stopping at the first error - submit_rsvp upserts by guest_id, so
+    // re-submitting on retry is harmless for whoever already succeeded.
+    const results = await Promise.allSettled(currentMembers.map(member => {
+      const id = member.guestId;
+      const attending = formData.get(`attending-${id}`) === 'yes';
+      const welcomeParty = formData.get(`welcomeParty-${id}`) === 'yes';
+      return supabaseClient.rpc('submit_rsvp', {
+        p_guest_id: id,
+        p_first_name: member.firstName,
+        p_last_name: member.lastName,
+        p_attending: attending,
+        p_guest_name: formData.get(`guestName-${id}`) || null,
+        p_meal: formData.get(`meal-${id}`) || null,
+        p_dietary: formData.get(`dietary-${id}`) || null,
+        p_welcome_party: welcomeParty,
+        p_hotel: formData.get(`hotel-${id}`) || null,
+        p_notes: formData.get(`notes-${id}`) || null,
+      }).then(({ error }) => { if(error) throw error; });
+    }));
 
+    submitBtn.disabled = false;
+
+    const failed = results
+      .map((result, i) => ({ result, member: currentMembers[i] }))
+      .filter(x => x.result.status === 'rejected');
+
+    if(failed.length === 0){
       rsvpForm.style.display = 'none';
       if(foundBanner) foundBanner.style.display = 'none';
       successEl.classList.add('is-visible');
       window.scrollTo({ top: successEl.offsetTop - 120, behavior: 'smooth' });
-    } catch(err){
-      console.error(err);
+    } else {
+      failed.forEach(f => console.error(f.member, f.result.reason));
       submitBtn.textContent = originalText;
-      alert("Something went wrong submitting your RSVP. Please try again.");
-    } finally {
-      submitBtn.disabled = false;
+      const names = failed.map(f => f.member.firstName).join(', ');
+      const savedCount = currentMembers.length - failed.length;
+      const savedNote = savedCount > 0 ? ' The rest of your party saved fine - no need to redo them.' : '';
+      alert(`We couldn't save the RSVP for ${names}. Please try again in a moment.${savedNote}`);
     }
   });
 

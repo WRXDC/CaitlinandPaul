@@ -10,7 +10,7 @@ const WEDDING = {
   couple: { partnerOne: "Caitlin", partnerTwo: "Paul", fullNames: "Caitlin & Paul Uhrmacher" },
   date: { iso: "2027-10-16T17:00:00-06:00", display: "October 16, 2027", short: "10.16.27" },
   location: { city: "Mexico City", country: "Mexico", venue: "Casa Xipe" },
-  rsvpDeadline: "August 1, 2027",
+  rsvpDeadline: { iso: "2027-08-01", display: "August 1, 2027" },
 };
 
 // Countdown target - used by main.js
@@ -196,7 +196,7 @@ const FAQ = [
     category: "RSVP",
     items: [
       { q: "What happens after I RSVP?", a: "You're all set! Your RSVP includes your meal choice and where you're staying, so there's nothing else to do unless your plans change - in that case, just reach out and let us know. We'll follow up closer to the date with any final details." },
-      { q: "By when do I need to RSVP?", a: "Please RSVP by " + WEDDING.rsvpDeadline + " so we can finalize headcounts with our vendors." },
+      { q: "By when do I need to RSVP?", a: "Please RSVP by " + WEDDING.rsvpDeadline.display + " so we can finalize headcounts with our vendors." },
     ],
   },
 ];

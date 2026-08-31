@@ -80,6 +80,7 @@
     const { data, error } = await supabaseClient
       .from('guests')
       .select('id, first_name, last_name, household, invited_plus_one, plus_one_name, rsvps(attending, guest_name, meal, dietary, welcome_party, hotel, notes, updated_at)')
+      .order('household', { ascending: true, nullsFirst: false })
       .order('last_name', { ascending: true });
 
     if(error){
@@ -131,12 +132,18 @@
   function renderTable(){
     const filtered = getFiltered();
     emptyMessage.style.display = filtered.length ? 'none' : 'block';
+    let prevHousehold; // undefined on the first row, so it always counts as a new group
     tableBody.innerHTML = filtered.map(r => {
       const g = r.guest, rsvp = r.rsvp;
       const name = `${g.first_name} ${g.last_name}` + (rsvp && rsvp.guest_name ? ` + ${rsvp.guest_name}` : '');
-      return `<tr>
+      // Guests with no household are each their own group, not one big
+      // blank-household group - only actually-matching households collapse.
+      const isNewGroup = !g.household || g.household !== prevHousehold;
+      prevHousehold = g.household;
+      const groupStyle = isNewGroup ? ' style="border-top:2px solid var(--line-strong);"' : '';
+      return `<tr${groupStyle}>
         <td>${escapeHtml(name)}</td>
-        <td>${escapeHtml(g.household)}</td>
+        <td>${isNewGroup ? escapeHtml(g.household) : ''}</td>
         <td><span class="status-badge status-${r.status}">${statusLabel(r.status)}</span></td>
         <td>${escapeHtml(rsvp && rsvp.meal)}</td>
         <td>${escapeHtml(rsvp && rsvp.dietary)}</td>
