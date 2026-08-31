@@ -434,10 +434,15 @@
       if(successBody) successBody.textContent = copy.body;
       if(successCta) successCta.style.display = copy.showCta ? '' : 'none';
 
-      rsvpForm.style.display = 'none';
-      if(foundBanner) foundBanner.style.display = 'none';
+      // Deliberately NOT hiding the form/banner here. For a large household
+      // the submit button can sit thousands of pixels down the page - hiding
+      // everything above the success message collapses the page and forces
+      // a jarring jump back up to where that content used to be. Leaving the
+      // form in place means the success message just appears right where
+      // the user already is, below the button they just pressed.
+      submitBtn.textContent = 'Update RSVP';
       successEl.classList.add('is-visible');
-      window.scrollTo({ top: successEl.offsetTop - 120, behavior: 'smooth' });
+      successEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
     } else {
       failed.forEach(f => console.error(f.member, f.result.reason));
       submitBtn.textContent = originalText;
