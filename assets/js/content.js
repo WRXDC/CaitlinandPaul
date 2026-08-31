@@ -132,27 +132,17 @@ const NEIGHBORHOODS_EXPLORE = [
   { name: "Polanco", desc: "Polished and upscale, with some of the city's best fine dining." },
 ];
 
-const FOOD_AND_DRINK = [
-  { category: "Tacos", desc: "From taquerías to trompo stands - ask any local for their favorite, everyone has strong opinions." },
-  { category: "Restaurants", desc: "Mexico City's fine dining scene is world-class; reservations for the best spots go fast." },
-  { category: "Coffee", desc: "A serious specialty coffee scene, concentrated in Roma and Condesa." },
-  { category: "Mezcal", desc: "Mexico City's mezcalerías are a great way to spend an evening - start slow, it sneaks up on you." },
-  { category: "Cocktails", desc: "Several bars here regularly land on 'World's Best' lists - worth dressing up for one night." },
-  { category: "Bakeries", desc: "Excellent French-leaning pastry culture alongside classic pan dulce - try both." },
-  { category: "Markets", desc: "Mercado Roma and Mercado de San Juan are great for a casual, wander-and-graze lunch." },
-];
-
 const DAY_TRIPS = [
-  { name: "Teotihuacán", desc: "Ancient pyramids about an hour outside the city - go early to beat the heat and crowds.", time: "Half day" },
-  { name: "Xochimilco", desc: "Colorful gondola-style boats (trajineras) through historic canals - lively, festive, best with a group.", time: "Half day" },
+  { name: "Teotihuacán", desc: "Ancient pyramids about an hour outside the city - go early to beat the heat and crowds.", time: "Half day", img: "assets/img/teotihuacan.jpg" },
+  { name: "Xochimilco", desc: "Colorful gondola-style boats (trajineras) through historic canals - lively, festive, best with a group.", time: "Half day", img: "assets/img/xochimilco.jpg" },
 ];
 
 const FAVORITES = {
   note: "This is our running list of the spots we love most - the places we'd take our own friends. We'll keep adding to it before the wedding, so check back.",
   items: [
-    { name: "Your Favorite Taco Spot", desc: "Caitlin & Paul - add your pick here.", placeholder: true },
-    { name: "Your Favorite Cocktail Bar", desc: "Caitlin & Paul - add your pick here.", placeholder: true },
-    { name: "Your Favorite Museum or Walk", desc: "Caitlin & Paul - add your pick here.", placeholder: true },
+    { name: "Churrería El Moro", desc: "Our favorite churro shop - get them with a cup of hot chocolate for dipping.", img: "assets/img/el-moro-churros.jpg" },
+    { name: "Sonámbulo Café", desc: "A great coffee shop, worth the stop.", img: "assets/img/sonambulo-cafe.jpg" },
+    { name: "Antolina", desc: "One of our favorite dinners in the city.", img: "assets/img/antolina.jpg" },
   ],
 };
 

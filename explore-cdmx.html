@@ -47,8 +47,19 @@
   </div>
 </header>
 
+<!-- MUST DO -->
+<section class="section-tight bg-paper">
+  <div class="container">
+    <div class="section-header reveal">
+      <span class="eyebrow">Must Do</span>
+      <h2>The essentials</h2>
+    </div>
+    <div class="card-grid grid-3" id="must-do-wrap"></div>
+  </div>
+</section>
+
 <!-- FAVORITES -->
-<section class="section-tight bg-green">
+<section class="section bg-green">
   <div class="container">
     <div class="section-header reveal">
       <span class="eyebrow on-dark">Straight From Us</span>
@@ -56,17 +67,6 @@
       <p class="lede mt-1" id="favorites-note"></p>
     </div>
     <div class="card-grid grid-3" id="favorites-wrap"></div>
-  </div>
-</section>
-
-<!-- MUST DO -->
-<section class="section bg-paper">
-  <div class="container">
-    <div class="section-header reveal">
-      <span class="eyebrow">Must Do</span>
-      <h2>The essentials</h2>
-    </div>
-    <div class="card-grid grid-3" id="must-do-wrap"></div>
   </div>
 </section>
 
@@ -78,17 +78,6 @@
       <h2>Where to wander</h2>
     </div>
     <div class="card-grid grid-3" id="neighborhoods-explore-wrap"></div>
-  </div>
-</section>
-
-<!-- FOOD & DRINK -->
-<section class="section bg-paper">
-  <div class="container">
-    <div class="section-header reveal">
-      <span class="eyebrow">Food & Drink</span>
-      <h2>Eat and drink your way through it</h2>
-    </div>
-    <div class="card-grid grid-3" id="food-drink-wrap"></div>
   </div>
 </section>
 
@@ -143,11 +132,8 @@
 
   document.getElementById('favorites-wrap').innerHTML = FAVORITES.items.map((item, i) => `
     <div class="feature-card reveal reveal-delay-${i}">
-      <div class="photo-block tone-${i} arch-top" style="aspect-ratio:4/5;">
-        <span class="photo-plus">+</span>
-        <span class="photo-label">Add a photo</span>
-      </div>
-      <span class="needs-input mt-2" style="display:inline-flex; width:fit-content;">Add your pick</span>
+      ${Render.photoFrame(item.img, item.name, null, i, 'arch-top')}
+      ${item.placeholder ? `<span class="needs-input mt-2" style="display:inline-flex; width:fit-content;">Add your pick</span>` : ''}
       <h3 class="mt-1" style="color:var(--paper);">${item.name}</h3>
       <p class="mt-1" style="color:rgba(244,237,224,.7);">${item.desc}</p>
     </div>
@@ -163,11 +149,9 @@
     </div>
   `).join('');
 
-  document.getElementById('food-drink-wrap').innerHTML = FOOD_AND_DRINK.map((item, i) =>
-    Render.exploreCard(item, i)).join('');
-
   document.getElementById('day-trips-wrap').innerHTML = DAY_TRIPS.map((item, i) => `
-    <div class="info-card reveal reveal-delay-${i % 3}" style="background:rgba(251,247,238,.06); border-color:var(--line-on-dark);">
+    <div class="feature-card reveal reveal-delay-${i}">
+      ${Render.photoFrame(item.img, item.name, null, i, 'arch-top')}
       <span class="icon-num" style="color:var(--ochre);">${item.time}</span>
       <h3 class="mt-1" style="color:var(--paper);">${item.name}</h3>
       <p class="mt-1" style="color:rgba(244,237,224,.75);">${item.desc}</p>

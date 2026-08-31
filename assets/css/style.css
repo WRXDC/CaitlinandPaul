@@ -290,6 +290,9 @@ p{ color:var(--charcoal-70); max-width:60ch; }
   background:linear-gradient(0deg, rgba(30,26,20,.6), transparent);
 }
 
+/* favorite spots are cropped tight by default object-fit:cover; show the whole photo instead */
+#favorites-wrap .photo-frame img{ object-fit:contain; }
+
 /* ---------------------------------- cards ----------------------------------- */
 .card-grid{ display:grid; gap:28px; }
 .grid-3{ grid-template-columns:repeat(3,1fr); }
@@ -303,8 +306,8 @@ p{ color:var(--charcoal-70); max-width:60ch; }
 @media (max-width:900px){ #must-do-wrap > *{ flex:0 0 calc((100% - 28px)/2); } }
 @media (max-width:640px){ #must-do-wrap > *{ flex:0 0 100%; } }
 
-/* #day-trips-wrap currently has a single item in a 2-col grid; center it instead of left-aligning */
-#day-trips-wrap{ display:flex; justify-content:center; }
+/* #day-trips-wrap has 2 items in a 2-col grid; wrap and center instead of left-aligning */
+#day-trips-wrap{ display:flex; flex-wrap:wrap; justify-content:center; }
 #day-trips-wrap > *{ flex:0 0 calc((100% - 28px)/2); }
 @media (max-width:640px){ #day-trips-wrap > *{ flex:0 0 100%; } }
 
