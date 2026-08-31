@@ -267,7 +267,10 @@
       }
     }
 
-    if(membersNav) membersNav.innerHTML = membersNavHtml(invitation.members);
+    if(membersNav){
+      membersNav.style.display = invitation.members.length > 1 ? '' : 'none';
+      membersNav.innerHTML = membersNavHtml(invitation.members);
+    }
     membersWrap.innerHTML = invitation.members.map((m, i) => memberCardHtml(m, i, invitation.members.length)).join('');
     membersWrap.querySelectorAll('[data-member-card]').forEach(wireCard);
     wireNav();
