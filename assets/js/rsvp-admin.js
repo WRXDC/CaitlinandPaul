@@ -79,7 +79,7 @@
   async function loadData(){
     const { data, error } = await supabaseClient
       .from('guests')
-      .select('id, first_name, last_name, household, invited_plus_one, plus_one_name, rsvps(attending, guest_name, meal, dietary, arrival, departure, hotel, transportation_needs, notes, updated_at)')
+      .select('id, first_name, last_name, household, invited_plus_one, plus_one_name, rsvps(attending, guest_name, meal, dietary, welcome_party, hotel, notes, updated_at)')
       .order('last_name', { ascending: true });
 
     if(error){
@@ -123,6 +123,11 @@
     });
   }
 
+  function welcomePartyLabel(rsvp){
+    if(!rsvp || rsvp.welcome_party === null || rsvp.welcome_party === undefined) return '';
+    return rsvp.welcome_party ? 'Yes' : 'No';
+  }
+
   function renderTable(){
     const filtered = getFiltered();
     emptyMessage.style.display = filtered.length ? 'none' : 'block';
@@ -135,10 +140,8 @@
         <td><span class="status-badge status-${r.status}">${statusLabel(r.status)}</span></td>
         <td>${escapeHtml(rsvp && rsvp.meal)}</td>
         <td>${escapeHtml(rsvp && rsvp.dietary)}</td>
-        <td>${escapeHtml(rsvp && rsvp.arrival)}</td>
-        <td>${escapeHtml(rsvp && rsvp.departure)}</td>
+        <td>${escapeHtml(welcomePartyLabel(rsvp))}</td>
         <td>${escapeHtml(rsvp && rsvp.hotel)}</td>
-        <td>${escapeHtml(rsvp && rsvp.transportation_needs)}</td>
         <td>${escapeHtml(rsvp && rsvp.notes)}</td>
       </tr>`;
     }).join('');
@@ -154,15 +157,14 @@
 
   exportBtn.addEventListener('click', () => {
     const filtered = getFiltered();
-    const headers = ['First Name','Last Name','Household','Status','Guest Name','Meal','Dietary','Arrival','Departure','Hotel','Transportation','Notes'];
+    const headers = ['First Name','Last Name','Household','Status','Guest Name','Meal','Dietary','Welcome Party','Hotel','Notes'];
     const lines = [headers.join(',')];
     filtered.forEach(r => {
       const g = r.guest, rsvp = r.rsvp;
       lines.push([
         g.first_name, g.last_name, g.household || '', statusLabel(r.status),
         (rsvp && rsvp.guest_name) || '', (rsvp && rsvp.meal) || '', (rsvp && rsvp.dietary) || '',
-        (rsvp && rsvp.arrival) || '', (rsvp && rsvp.departure) || '', (rsvp && rsvp.hotel) || '',
-        (rsvp && rsvp.transportation_needs) || '', (rsvp && rsvp.notes) || '',
+        welcomePartyLabel(rsvp), (rsvp && rsvp.hotel) || '', (rsvp && rsvp.notes) || '',
       ].map(csvEscape).join(','));
     });
     const blob = new Blob([lines.join('\n')], { type: 'text/csv;charset=utf-8;' });

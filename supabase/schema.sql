@@ -5,13 +5,20 @@
 -- admin session (read-only, for rsvp-admin.html).
 --
 -- Run this once in the Supabase SQL Editor (Project → SQL Editor → New query)
--- on a fresh project. Safe to re-run: uses IF NOT EXISTS / OR REPLACE.
+-- on a fresh project. Safe to re-run on an existing project too — every
+-- statement is idempotent (IF NOT EXISTS / IF EXISTS / OR REPLACE), including
+-- the ALTER TABLE block that migrates an older rsvps table (with
+-- arrival/departure/transportation_needs) to the current shape.
 -- ==========================================================================
 
 create extension if not exists pgcrypto;
 
 -- ---------------------------------------------------------------------
 -- guests — the private guest list. Never queried directly from the browser.
+-- `household` is a free-text label shared by everyone in the same party
+-- (e.g. "The Uhrmacher Family") — find_invitation() uses it to return
+-- everyone in a guest's household in one search, so they can RSVP for
+-- their whole party in one sitting instead of everyone searching separately.
 -- ---------------------------------------------------------------------
 create table if not exists public.guests (
   id                  uuid primary key default gen_random_uuid(),
@@ -28,6 +35,12 @@ create table if not exists public.guests (
 create index if not exists guests_name_idx
   on public.guests (lower(first_name), lower(last_name));
 
+-- Case-insensitive household lookups (used by find_invitation to pull in
+-- the rest of a guest's party).
+create index if not exists guests_household_idx
+  on public.guests (lower(trim(household)))
+  where household is not null;
+
 -- ---------------------------------------------------------------------
 -- rsvps — one row per guest. unique(guest_id) is what makes the
 -- "on conflict" upsert in submit_rsvp prevent duplicate RSVPs.
@@ -39,15 +52,21 @@ create table if not exists public.rsvps (
   guest_name              text,
   meal                    text,
   dietary                 text,
-  arrival                 date,
-  departure               date,
+  welcome_party           boolean,
   hotel                   text,
-  transportation_needs    text,
   notes                   text,
   submitted_at            timestamptz not null default now(),
   updated_at              timestamptz not null default now(),
   unique (guest_id)
 );
+
+-- Migrate an existing (pre-redesign) rsvps table to the current shape:
+-- drop the arrival/departure/transportation fields we no longer ask for,
+-- and add welcome_party for the new Friday welcome-party question.
+alter table public.rsvps drop column if exists arrival;
+alter table public.rsvps drop column if exists departure;
+alter table public.rsvps drop column if exists transportation_needs;
+alter table public.rsvps add column if not exists welcome_party boolean;
 
 -- ---------------------------------------------------------------------
 -- Row Level Security

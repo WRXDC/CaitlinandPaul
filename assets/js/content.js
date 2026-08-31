@@ -205,5 +205,5 @@ const FAQ = [
 /* RSVP form config                                                      */
 /* -------------------------------------------------------------------- */
 
-const MEAL_OPTIONS = ["Select a meal", "Beef", "Fish", "Vegetarian", "Vegan", "Kids' Menu"];
+const MEAL_OPTIONS = ["Select a meal", "Salmon with Almond & Pumpkin Seed Crust", "Chicken Mole with Panela and Plantain", "Vegetarian"];
 const HOTEL_OPTIONS = ["Select a hotel / not yet booked", "InterContinental Presidente Mexico City (room block)", "Hyatt Regency Mexico City", "Residence L'Heritage Tennyson by BlueBay", "Other hotel near the InterContinental", "Other / not staying near the InterContinental"];
