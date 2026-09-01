@@ -323,7 +323,12 @@
     successEl.classList.remove('is-visible');
     searchStep.style.display = 'none';
     foundStep.style.display = '';
-    window.scrollTo({ top: foundStep.offsetTop - 120, behavior: 'smooth' });
+    // foundStep sits close to the top of the page (it replaces the compact
+    // search step in the same spot), so a hardcoded window.scrollTo landed
+    // near the very top of the page - a jarring jump backward for anyone
+    // who'd scrolled down at all to reach the button. scrollIntoView only
+    // moves the minimum distance needed, or not at all if it's already in view.
+    foundStep.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
   }
 
   function resetToSearch(){
