@@ -100,7 +100,7 @@
     const attendingYes = existing ? existing.attending : true;
     const welcomePartyYes = existing && existing.welcomeParty === true;
     const welcomePartyNo = !existing || existing.welcomeParty === false;
-    const hasPlusOne = existing && existing.guestName;
+    const hasPlusOne = existing && existing.plusOneFirstName;
 
     // A family sharing one hotel is the common case, so everyone but the
     // person who searched gets a "same as them" shortcut, defaulted on
@@ -169,9 +169,16 @@
 
         ${m.invitedPlusOne ? `
         <div class="rsvp-plus-one" data-plus-one-block>
-          <div class="form-block">
-            <label for="guestName-${m.guestId}">Bringing a Guest? <span style="text-transform:none; letter-spacing:0;">(optional - enter their name)</span></label>
-            <input type="text" id="guestName-${m.guestId}" name="guestName-${m.guestId}" data-track placeholder="Their name" value="${existing && existing.guestName ? existing.guestName : ''}">
+          <label>Bringing a Guest? <span style="text-transform:none; letter-spacing:0;">(optional)</span></label>
+          <div class="form-row form-block">
+            <div>
+              <label for="guestFirstName-${m.guestId}">First Name</label>
+              <input type="text" id="guestFirstName-${m.guestId}" name="guestFirstName-${m.guestId}" data-track placeholder="Their first name" value="${existing && existing.plusOneFirstName ? existing.plusOneFirstName : ''}">
+            </div>
+            <div>
+              <label for="guestLastName-${m.guestId}">Last Name</label>
+              <input type="text" id="guestLastName-${m.guestId}" name="guestLastName-${m.guestId}" data-track placeholder="Their last name" value="${existing && existing.plusOneLastName ? existing.plusOneLastName : ''}">
+            </div>
           </div>
           <div data-plus-one-fields style="display:${hasPlusOne ? '' : 'none'};">
             <div class="form-block">
@@ -237,12 +244,12 @@
   // left blank and there's nothing to force a meal choice for.
   function syncPlusOne(card){
     const guestId = card.dataset.guestId;
-    const nameInput = card.querySelector(`#guestName-${guestId}`);
+    const firstNameInput = card.querySelector(`#guestFirstName-${guestId}`);
     const fields = card.querySelector('[data-plus-one-fields]');
-    if(!nameInput || !fields) return;
+    if(!firstNameInput || !fields) return;
     const attending = card.querySelector(`input[name="attending-${guestId}"]:checked`);
     const attendingYes = !!(attending && attending.value === 'yes');
-    const hasName = attendingYes && nameInput.value.trim().length > 0;
+    const hasName = attendingYes && firstNameInput.value.trim().length > 0;
     fields.style.display = hasName ? '' : 'none';
     setRadioGroupRequired(card, `plusOneMeal-${guestId}`, hasName);
   }
@@ -273,9 +280,9 @@
     });
     syncAttending(card);
 
-    const nameInput = card.querySelector(`#guestName-${guestId}`);
-    if(nameInput){
-      nameInput.addEventListener('input', () => { syncPlusOne(card); updateNavState(card); });
+    const firstNameInput = card.querySelector(`#guestFirstName-${guestId}`);
+    if(firstNameInput){
+      firstNameInput.addEventListener('input', () => { syncPlusOne(card); updateNavState(card); });
       syncPlusOne(card);
     }
 
@@ -456,7 +463,8 @@
         p_first_name: member.firstName,
         p_last_name: member.lastName,
         p_attending: attending,
-        p_guest_name: formData.get(`guestName-${id}`) || null,
+        p_plus_one_first_name: formData.get(`guestFirstName-${id}`) || null,
+        p_plus_one_last_name: formData.get(`guestLastName-${id}`) || null,
         p_meal: formData.get(`meal-${id}`) || null,
         p_dietary: formData.get(`dietary-${id}`) || null,
         p_plus_one_meal: formData.get(`plusOneMeal-${id}`) || null,

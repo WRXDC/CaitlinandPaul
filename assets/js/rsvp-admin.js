@@ -28,7 +28,8 @@
   const statDeclined = document.querySelector('[data-stat-declined]');
   const statPending = document.querySelector('[data-stat-pending]');
 
-  let rows = []; // [{ guest, rsvp, status }]
+  let rows = [];        // [{ guest, rsvp, status }] - actual invited guests only
+  let displayRows = [];  // rows + a synthesized entry per named, attending plus-one
 
   function escapeHtml(value){
     const s = (value === null || value === undefined) ? '' : String(value);
@@ -79,7 +80,7 @@
   async function loadData(){
     const { data, error } = await supabaseClient
       .from('guests')
-      .select('id, first_name, last_name, household, invited_plus_one, plus_one_name, rsvps(attending, guest_name, meal, dietary, plus_one_meal, plus_one_dietary, welcome_party, hotel, notes, updated_at)')
+      .select('id, first_name, last_name, household, invited_plus_one, plus_one_name, rsvps(attending, plus_one_first_name, plus_one_last_name, meal, dietary, plus_one_meal, plus_one_dietary, welcome_party, hotel, notes, updated_at)')
       .order('household', { ascending: true, nullsFirst: false })
       .order('last_name', { ascending: true });
 
@@ -94,16 +95,54 @@
       return { guest: g, rsvp, status };
     });
 
+    displayRows = buildDisplayRows(rows);
+
     renderStats();
     renderTable();
   }
 
+  // A plus-one isn't on the guest list ahead of time, so they have no
+  // `guests` row of their own - but for a real headcount they need to show
+  // up as a person, not just a note buried in whoever brought them. We only
+  // ever collect their own meal/dietary; everything else (hotel, welcome
+  // party, notes) is a fair assumption to copy straight from their inviter.
+  function buildDisplayRows(baseRows){
+    const out = [];
+    baseRows.forEach(r => {
+      out.push(r);
+      const rsvp = r.rsvp;
+      if(rsvp && rsvp.attending && rsvp.plus_one_first_name){
+        out.push({
+          guest: {
+            first_name: rsvp.plus_one_first_name,
+            last_name: rsvp.plus_one_last_name || '',
+            household: r.guest.household,
+          },
+          rsvp: {
+            meal: rsvp.plus_one_meal,
+            dietary: rsvp.plus_one_dietary,
+            welcome_party: rsvp.welcome_party,
+            hotel: rsvp.hotel,
+            notes: rsvp.notes,
+          },
+          status: 'attending',
+          isPlusOne: true,
+          inviterName: `${r.guest.first_name} ${r.guest.last_name}`,
+        });
+      }
+    });
+    return out;
+  }
+
   function renderStats(){
-    const invited = rows.length;
-    const responded = rows.filter(r => r.status !== 'pending').length;
-    statInvited.textContent = invited;
-    statResponded.textContent = responded;
-    statAttending.textContent = rows.filter(r => r.status === 'attending').length;
+    // Once a plus-one is actually named, they're a real invited person too -
+    // both Invited and Attending count them (displayRows = rows + every
+    // named, attending plus-one). Responded/Declined/Pending describe the
+    // named invite list itself, which a not-yet-named plus-one slot isn't
+    // part of.
+    statInvited.textContent = displayRows.length;
+    statResponded.textContent = rows.filter(r => r.status !== 'pending').length;
+    statAttending.textContent = displayRows.filter(r => r.status === 'attending').length;
     statDeclined.textContent = rows.filter(r => r.status === 'declined').length;
     statPending.textContent = rows.filter(r => r.status === 'pending').length;
   }
@@ -115,10 +154,10 @@
   function getFiltered(){
     const q = (searchInput.value || '').trim().toLowerCase();
     const statusFilter = filterSelect.value;
-    return rows.filter(r => {
+    return displayRows.filter(r => {
       if(statusFilter !== 'all' && r.status !== statusFilter) return false;
       if(!q) return true;
-      const haystack = [r.guest.first_name, r.guest.last_name, r.guest.household, r.rsvp && r.rsvp.guest_name]
+      const haystack = [r.guest.first_name, r.guest.last_name, r.guest.household, r.inviterName]
         .filter(Boolean).join(' ').toLowerCase();
       return haystack.includes(q);
     });
@@ -129,34 +168,25 @@
     return rsvp.welcome_party ? 'Yes' : 'No';
   }
 
-  // Appends the plus-one's answer (if any) under the guest's own, e.g.
-  // "Salmon" then "+1: Chicken Mole" on its own line within the same cell.
-  function withPlusOne(value, plusOneValue){
-    if(!value && !plusOneValue) return '';
-    const lines = [];
-    if(value) lines.push(escapeHtml(value));
-    if(plusOneValue) lines.push(`<span class="small-caps" style="color:var(--charcoal-50);">+1: ${escapeHtml(plusOneValue)}</span>`);
-    return lines.join('<br>');
-  }
-
   function renderTable(){
     const filtered = getFiltered();
     emptyMessage.style.display = filtered.length ? 'none' : 'block';
     let prevHousehold; // undefined on the first row, so it always counts as a new group
     tableBody.innerHTML = filtered.map(r => {
       const g = r.guest, rsvp = r.rsvp;
-      const name = `${g.first_name} ${g.last_name}` + (rsvp && rsvp.guest_name ? ` + ${rsvp.guest_name}` : '');
+      const name = `${g.first_name} ${g.last_name}` +
+        (r.isPlusOne ? `<br><span class="small-caps" style="color:var(--charcoal-50);">+1 of ${escapeHtml(r.inviterName)}</span>` : '');
       // Guests with no household are each their own group, not one big
       // blank-household group - only actually-matching households collapse.
       const isNewGroup = !g.household || g.household !== prevHousehold;
       prevHousehold = g.household;
       const groupStyle = isNewGroup ? ' style="border-top:2px solid var(--line-strong);"' : '';
       return `<tr${groupStyle}>
-        <td>${escapeHtml(name)}</td>
-        <td>${escapeHtml(g.household)}</td>
+        <td>${name}</td>
+        <td>${isNewGroup ? escapeHtml(g.household) : ''}</td>
         <td><span class="status-badge status-${r.status}">${statusLabel(r.status)}</span></td>
-        <td>${withPlusOne(rsvp && rsvp.meal, rsvp && rsvp.plus_one_meal)}</td>
-        <td>${withPlusOne(rsvp && rsvp.dietary, rsvp && rsvp.plus_one_dietary)}</td>
+        <td>${escapeHtml(rsvp && rsvp.meal)}</td>
+        <td>${escapeHtml(rsvp && rsvp.dietary)}</td>
         <td>${escapeHtml(welcomePartyLabel(rsvp))}</td>
         <td>${escapeHtml(rsvp && rsvp.hotel)}</td>
         <td>${escapeHtml(rsvp && rsvp.notes)}</td>
@@ -174,14 +204,13 @@
 
   exportBtn.addEventListener('click', () => {
     const filtered = getFiltered();
-    const headers = ['First Name','Last Name','Household','Status','Guest Name','Meal','Dietary','Guest Meal','Guest Dietary','Welcome Party','Hotel','Notes'];
+    const headers = ['First Name','Last Name','Household','Plus One Of','Status','Meal','Dietary','Welcome Party','Hotel','Notes'];
     const lines = [headers.join(',')];
     filtered.forEach(r => {
       const g = r.guest, rsvp = r.rsvp;
       lines.push([
-        g.first_name, g.last_name, g.household || '', statusLabel(r.status),
-        (rsvp && rsvp.guest_name) || '', (rsvp && rsvp.meal) || '', (rsvp && rsvp.dietary) || '',
-        (rsvp && rsvp.plus_one_meal) || '', (rsvp && rsvp.plus_one_dietary) || '',
+        g.first_name, g.last_name, g.household || '', r.inviterName || '', statusLabel(r.status),
+        (rsvp && rsvp.meal) || '', (rsvp && rsvp.dietary) || '',
         welcomePartyLabel(rsvp), (rsvp && rsvp.hotel) || '', (rsvp && rsvp.notes) || '',
       ].map(csvEscape).join(','));
     });

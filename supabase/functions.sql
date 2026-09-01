@@ -60,7 +60,8 @@ begin
       'plusOneName', g.plus_one_name,
       'existingRsvp', case when r.id is null then null else jsonb_build_object(
         'attending', r.attending,
-        'guestName', r.guest_name,
+        'plusOneFirstName', r.plus_one_first_name,
+        'plusOneLastName', r.plus_one_last_name,
         'meal', r.meal,
         'dietary', r.dietary,
         'plusOneMeal', r.plus_one_meal,
@@ -100,13 +101,18 @@ grant execute on function public.find_invitation(text, text) to anon, authentica
 -- constraint + upsert means a second submission always updates the same
 -- row instead of creating a duplicate. Called once per household member
 -- when a guest RSVPs for their whole party.
+--
+-- A plus-one is captured by first + last name (not a single combined
+-- string) so rsvp-admin.html can log them as their own person in the
+-- headcount, rather than just a note attached to whoever brought them.
 -- ---------------------------------------------------------------------
 create or replace function public.submit_rsvp(
   p_guest_id uuid,
   p_first_name text,
   p_last_name text,
   p_attending boolean,
-  p_guest_name text,
+  p_plus_one_first_name text,
+  p_plus_one_last_name text,
   p_meal text,
   p_dietary text,
   p_plus_one_meal text,
@@ -133,15 +139,16 @@ begin
 
   -- Plus-one fields only make sense if this guest is attending AND actually
   -- named someone they're bringing.
-  v_has_plus_one := p_attending and p_guest_name is not null and trim(p_guest_name) <> '';
+  v_has_plus_one := p_attending and p_plus_one_first_name is not null and trim(p_plus_one_first_name) <> '';
 
   insert into rsvps (
-    guest_id, attending, guest_name, meal, dietary,
+    guest_id, attending, plus_one_first_name, plus_one_last_name, meal, dietary,
     plus_one_meal, plus_one_dietary, welcome_party, hotel, notes,
     submitted_at, updated_at
   ) values (
     v_guest.id, p_attending,
-    case when p_attending then p_guest_name else null end,
+    case when v_has_plus_one then p_plus_one_first_name else null end,
+    case when v_has_plus_one then p_plus_one_last_name else null end,
     case when p_attending then p_meal else null end,
     case when p_attending then p_dietary else null end,
     case when v_has_plus_one then p_plus_one_meal else null end,
@@ -153,7 +160,8 @@ begin
   )
   on conflict (guest_id) do update set
     attending = excluded.attending,
-    guest_name = excluded.guest_name,
+    plus_one_first_name = excluded.plus_one_first_name,
+    plus_one_last_name = excluded.plus_one_last_name,
     meal = excluded.meal,
     dietary = excluded.dietary,
     plus_one_meal = excluded.plus_one_meal,
@@ -167,10 +175,11 @@ begin
 end;
 $$;
 
-revoke all on function public.submit_rsvp(uuid, text, text, boolean, text, text, text, text, text, boolean, text, text) from public;
-grant execute on function public.submit_rsvp(uuid, text, text, boolean, text, text, text, text, text, boolean, text, text) to anon, authenticated;
+revoke all on function public.submit_rsvp(uuid, text, text, boolean, text, text, text, text, text, text, boolean, text, text) from public;
+grant execute on function public.submit_rsvp(uuid, text, text, boolean, text, text, text, text, text, text, boolean, text, text) to anon, authenticated;
 
 -- Drop old function signatures from before this redesign, so Postgres
 -- doesn't keep stale overloads around after you re-run this file.
 drop function if exists public.submit_rsvp(uuid, text, text, boolean, text, text, text, date, date, text, text, text);
 drop function if exists public.submit_rsvp(uuid, text, text, boolean, text, text, text, boolean, text, text);
+drop function if exists public.submit_rsvp(uuid, text, text, boolean, text, text, text, text, text, boolean, text, text);

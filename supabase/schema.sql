@@ -49,7 +49,8 @@ create table if not exists public.rsvps (
   id                      uuid primary key default gen_random_uuid(),
   guest_id                uuid not null references public.guests(id) on delete cascade,
   attending               boolean not null,
-  guest_name              text,
+  plus_one_first_name     text,
+  plus_one_last_name      text,
   meal                    text,
   dietary                 text,
   plus_one_meal           text,
@@ -64,15 +65,19 @@ create table if not exists public.rsvps (
 
 -- Migrate an existing (pre-redesign) rsvps table to the current shape:
 -- drop the arrival/departure/transportation fields we no longer ask for,
--- add welcome_party for the Friday welcome-party question, and give a
--- plus-one their own meal/dietary answers instead of sharing the inviting
--- guest's.
+-- add welcome_party for the Friday welcome-party question, give a plus-one
+-- their own meal/dietary answers instead of sharing the inviting guest's,
+-- and split their name into first/last (guest_name held a single combined
+-- string) so a plus-one can be logged as a real person on the dashboard.
 alter table public.rsvps drop column if exists arrival;
 alter table public.rsvps drop column if exists departure;
 alter table public.rsvps drop column if exists transportation_needs;
+alter table public.rsvps drop column if exists guest_name;
 alter table public.rsvps add column if not exists welcome_party boolean;
 alter table public.rsvps add column if not exists plus_one_meal text;
 alter table public.rsvps add column if not exists plus_one_dietary text;
+alter table public.rsvps add column if not exists plus_one_first_name text;
+alter table public.rsvps add column if not exists plus_one_last_name text;
 
 -- ---------------------------------------------------------------------
 -- Row Level Security
