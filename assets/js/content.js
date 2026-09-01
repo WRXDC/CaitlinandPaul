@@ -205,5 +205,9 @@ const FAQ = [
 /* RSVP form config                                                      */
 /* -------------------------------------------------------------------- */
 
-const MEAL_OPTIONS = ["Select a meal", "Salmon with Almond & Pumpkin Seed Crust", "Chicken Mole with Panela and Plantain", "Vegetarian"];
+const MEAL_OPTIONS = [
+  { name: "Salmon with Almond & Pumpkin Seed Crust", img: "assets/img/meal-salmon.jpg" },
+  { name: "Chicken Mole with Panela and Plantain", img: "assets/img/meal-chicken-mole.jpg" },
+  { name: "Vegetarian", img: null },
+];
 const HOTEL_OPTIONS = ["Select a hotel / not yet booked", "InterContinental Presidente Mexico City (room block)", "Hyatt Regency Mexico City", "Residence L'Heritage Tennyson by BlueBay", "Other hotel near the InterContinental", "Other / not staying near the InterContinental"];

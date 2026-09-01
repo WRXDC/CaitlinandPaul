@@ -68,15 +68,21 @@
     searchMessage.style.display = text ? 'block' : 'none';
   }
 
-  // The placeholder is a real disabled option with an empty value, paired
-  // with `required` on the <select> - so an attending guest can't silently
-  // submit with the meal left on "Select a meal".
-  function mealOptionsHtml(selected, required){
-    return MEAL_OPTIONS.map((m, i) => {
-      const isPlaceholder = i === 0;
-      const isSelected = selected ? m === selected : isPlaceholder;
-      return `<option value="${isPlaceholder ? '' : m}" ${isPlaceholder ? 'disabled' : ''} ${isSelected ? 'selected' : ''}>${m}</option>`;
-    }).join('');
+  // A photo card per dish (instead of a plain <select>) so guests can see
+  // what they're actually picking. Radios start with none checked, paired
+  // with `required` on every radio in the group - a native radio group is
+  // satisfied once any one of them is checked, so this still blocks
+  // submission on an unmade choice the same way the old select did.
+  function mealPickerHtml(name, selected, required){
+    return `<div class="meal-picker">${MEAL_OPTIONS.map(opt => `
+      <label class="meal-card">
+        <input type="radio" name="${name}" value="${opt.name}" ${opt.name === selected ? 'checked' : ''} ${required ? 'required' : ''} data-track>
+        <span class="meal-card-photo">${opt.img
+          ? `<img src="${opt.img}" alt="${opt.name}" loading="lazy">`
+          : `<span class="meal-card-noimg">${opt.name}</span>`}</span>
+        <span class="meal-card-name">${opt.name}</span>
+      </label>
+    `).join('')}</div>`;
   }
 
   // Unlike meal, "not yet booked" (the first option) is a legitimate answer,
@@ -89,12 +95,19 @@
     }).join('');
   }
 
-  function memberCardHtml(m, index, total){
+  function memberCardHtml(m, index, total, searched){
     const existing = m.existingRsvp;
     const attendingYes = existing ? existing.attending : true;
     const welcomePartyYes = existing && existing.welcomeParty === true;
     const welcomePartyNo = !existing || existing.welcomeParty === false;
     const hasPlusOne = existing && existing.guestName;
+
+    // A family sharing one hotel is the common case, so everyone but the
+    // person who searched gets a "same as them" shortcut, defaulted on
+    // unless they'd previously answered with something different.
+    const isSearched = m.guestId === searched.guestId;
+    const searchedHotel = (searched.existingRsvp && searched.existingRsvp.hotel) || '';
+    const sameHotel = !isSearched && (!existing || !existing.hotel || existing.hotel === searchedHotel);
 
     return `
     <div class="rsvp-member" data-member-card data-guest-id="${m.guestId}" id="member-${m.guestId}">
@@ -120,8 +133,8 @@
       <div data-attending-fields>
 
         <div class="form-block">
-          <label for="meal-${m.guestId}">Meal Selection</label>
-          <select id="meal-${m.guestId}" name="meal-${m.guestId}" required data-track>${mealOptionsHtml(existing && existing.meal)}</select>
+          <label>Meal Selection</label>
+          ${mealPickerHtml(`meal-${m.guestId}`, existing && existing.meal, true)}
         </div>
 
         <div class="form-block">
@@ -145,7 +158,12 @@
 
         <div class="form-block">
           <label for="hotel-${m.guestId}">Hotel / Accommodation</label>
-          <select id="hotel-${m.guestId}" name="hotel-${m.guestId}">${hotelOptionsHtml(existing && existing.hotel)}</select>
+          ${!isSearched ? `
+          <label class="checkbox-inline">
+            <input type="checkbox" data-same-hotel="${m.guestId}" ${sameHotel ? 'checked' : ''}>
+            <span>Same hotel as ${searched.firstName}</span>
+          </label>` : ''}
+          <select id="hotel-${m.guestId}" name="hotel-${m.guestId}" style="display:${sameHotel ? 'none' : ''};">${hotelOptionsHtml(existing && existing.hotel)}</select>
           <p class="form-note">Haven't booked yet? Pick "not yet booked" - you can always come back and update this once you have.</p>
         </div>
 
@@ -157,8 +175,8 @@
           </div>
           <div data-plus-one-fields style="display:${hasPlusOne ? '' : 'none'};">
             <div class="form-block">
-              <label for="plusOneMeal-${m.guestId}">Their Meal Selection</label>
-              <select id="plusOneMeal-${m.guestId}" name="plusOneMeal-${m.guestId}" data-track>${mealOptionsHtml(existing && existing.plusOneMeal)}</select>
+              <label>Their Meal Selection</label>
+              ${mealPickerHtml(`plusOneMeal-${m.guestId}`, existing && existing.plusOneMeal, false)}
             </div>
             <div class="form-block">
               <label for="plusOneDietary-${m.guestId}">Their Dietary Restrictions</label>
@@ -191,6 +209,12 @@
     if(hint) hint.textContent = copy.hint;
   }
 
+  // The meal picker is a radio group, not a single element - `required`
+  // has to be set on every radio in the group for the browser to enforce it.
+  function setRadioGroupRequired(card, name, required){
+    card.querySelectorAll(`input[name="${name}"]`).forEach(r => { r.required = required; });
+  }
+
   function syncAttending(card){
     const guestId = card.dataset.guestId;
     const checked = card.querySelector(`input[name="attending-${guestId}"]:checked`);
@@ -201,10 +225,9 @@
     }
     // CSS display:none does NOT exempt a field from constraint validation -
     // only removing `required` does. Without this, declining attendance left
-    // the hidden meal select still required, so the browser silently blocked
+    // the hidden meal picker still required, so the browser silently blocked
     // submission on a field it couldn't even show the user.
-    const meal = card.querySelector(`#meal-${guestId}`);
-    if(meal) meal.required = attendingYes;
+    setRadioGroupRequired(card, `meal-${guestId}`, attendingYes);
     syncPlusOne(card);
     syncNotes(card, attendingYes);
   }
@@ -216,13 +239,12 @@
     const guestId = card.dataset.guestId;
     const nameInput = card.querySelector(`#guestName-${guestId}`);
     const fields = card.querySelector('[data-plus-one-fields]');
-    const mealSelect = card.querySelector(`#plusOneMeal-${guestId}`);
     if(!nameInput || !fields) return;
     const attending = card.querySelector(`input[name="attending-${guestId}"]:checked`);
     const attendingYes = !!(attending && attending.value === 'yes');
     const hasName = attendingYes && nameInput.value.trim().length > 0;
     fields.style.display = hasName ? '' : 'none';
-    if(mealSelect) mealSelect.required = hasName;
+    setRadioGroupRequired(card, `plusOneMeal-${guestId}`, hasName);
   }
 
   // Marks a member's nav pill "done" once their attending decision - and,
@@ -235,11 +257,10 @@
     const attending = card.querySelector(`input[name="attending-${guestId}"]:checked`);
     let done = !!attending;
     if(attending && attending.value === 'yes'){
-      const meal = card.querySelector(`#meal-${guestId}`);
-      done = !!(meal && meal.value);
-      const plusOneMeal = card.querySelector(`#plusOneMeal-${guestId}`);
-      if(plusOneMeal && plusOneMeal.required){
-        done = done && !!plusOneMeal.value;
+      done = !!card.querySelector(`input[name="meal-${guestId}"]:checked`);
+      const plusOneMealRadios = card.querySelectorAll(`input[name="plusOneMeal-${guestId}"]`);
+      if(plusOneMealRadios.length && plusOneMealRadios[0].required){
+        done = done && !!card.querySelector(`input[name="plusOneMeal-${guestId}"]:checked`);
       }
     }
     pill.classList.toggle('is-done', done);
@@ -272,6 +293,28 @@
         <span class="member-nav-check"></span>${m.firstName}
       </button>
     `).join('');
+  }
+
+  // Wires up every "Same hotel as {searched}" checkbox: checking one hides
+  // that person's own select and mirrors the searched person's current
+  // value; unchecking reveals it again for an independent choice. Also
+  // keeps everyone checked "same" in sync if the searched person changes
+  // their own hotel afterward.
+  function wireSameHotel(searchedGuestId){
+    const searchedSelect = document.getElementById(`hotel-${searchedGuestId}`);
+    if(!searchedSelect) return;
+    const checkboxes = membersWrap.querySelectorAll('[data-same-hotel]');
+
+    checkboxes.forEach(cb => {
+      const sel = document.getElementById(`hotel-${cb.dataset.sameHotel}`);
+      if(!sel) return;
+      const sync = () => {
+        sel.style.display = cb.checked ? 'none' : '';
+        if(cb.checked) sel.value = searchedSelect.value;
+      };
+      cb.addEventListener('change', sync);
+      searchedSelect.addEventListener('change', () => { if(cb.checked) sel.value = searchedSelect.value; });
+    });
   }
 
   function wireNav(){
@@ -312,9 +355,10 @@
       membersNav.style.display = invitation.members.length > 1 ? '' : 'none';
       membersNav.innerHTML = membersNavHtml(invitation.members);
     }
-    membersWrap.innerHTML = invitation.members.map((m, i) => memberCardHtml(m, i, invitation.members.length)).join('');
+    membersWrap.innerHTML = invitation.members.map((m, i) => memberCardHtml(m, i, invitation.members.length, searched)).join('');
     membersWrap.querySelectorAll('[data-member-card]').forEach(wireCard);
     wireNav();
+    wireSameHotel(searched.guestId);
 
     submitBtn.textContent = invitation.members.some(m => m.existingRsvp) ? 'Update RSVP' : 'Send RSVP';
 
