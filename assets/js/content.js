@@ -94,6 +94,20 @@ const GOOD_TO_KNOW = [
 ];
 
 /* -------------------------------------------------------------------- */
+/* REGISTRY                                                              */
+/* Zola is the source of truth for the actual registry - items,          */
+/* purchases, and fulfillment all live there. This site only links out.  */
+/* -------------------------------------------------------------------- */
+
+const REGISTRY_URL = "https://www.zola.com/registry/paulandcaitlinoctober16/";
+
+const REGISTRY_CATEGORIES = [
+  { name: "For Our Home", desc: "A few things we've had our eye on for our home and kitchen." },
+  { name: "For Our Honeymoon", desc: "Help us make our honeymoon and future travels even more memorable." },
+  { name: "For Our Future", desc: "Experiences, adventures, and little things we'll enjoy together for years to come." },
+];
+
+/* -------------------------------------------------------------------- */
 /* STAY - Neighborhoods & Hotels                                        */
 /* -------------------------------------------------------------------- */
 

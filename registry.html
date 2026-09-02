@@ -5,7 +5,7 @@
 <script>if(localStorage.getItem('siteUnlocked')!=='true'){document.documentElement.style.visibility='hidden';}</script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Registry - Caitlin & Paul</title>
-<meta name="description" content="Registry information for Caitlin and Paul's wedding in Mexico City - coming soon.">
+<meta name="description" content="Registry for Caitlin and Paul's wedding in Mexico City - a few things for our home, our honeymoon, and our future together.">
 <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
@@ -42,18 +42,31 @@
 <header class="page-header">
   <div class="page-header-arch"></div>
   <div class="container">
-    <span class="eyebrow on-dark">Registry</span>
-    <h1>Coming Soon</h1>
-    <p class="lede">Your being there is the gift that matters most. We're still putting our registry together and will share it here as soon as it's ready.</p>
+    <span class="eyebrow on-dark">With Gratitude</span>
+    <h1>Registry</h1>
+    <p class="lede">Your presence is the greatest gift to us. If you'd like to celebrate with a gift, we've put together a small registry of things for our home, experiences we'll enjoy together, and contributions toward our honeymoon.</p>
   </div>
 </header>
 
-<section class="section-tight bg-clay-tint">
-  <div class="container text-center reveal" style="max-width:520px;">
-    <span class="eyebrow" style="justify-content:center;">In The Meantime</span>
-    <h2 class="mt-1">Check back soon</h2>
-    <p class="lede mt-2">Have a question before then? Reach out to us directly, or head to the FAQ for everything else you need to know.</p>
-    <a href="faq.html" class="btn btn-primary mt-3">Visit the FAQ <span class="btn-arrow">→</span></a>
+<!-- ============================= CATEGORIES ============================= -->
+<section class="section bg-paper">
+  <div class="container">
+    <div class="section-header reveal">
+      <span class="eyebrow">A Few Ideas</span>
+      <h2>Organized into three simple categories</h2>
+    </div>
+    <div class="card-grid grid-3" id="registry-categories-wrap"></div>
+  </div>
+</section>
+
+<!-- ============================= CTA ============================= -->
+<section class="section bg-green">
+  <div class="container text-center reveal" style="max-width:560px;">
+    <span class="eyebrow on-dark" style="justify-content:center;">Our Registry</span>
+    <h2 class="mt-1">See everything on Zola</h2>
+    <p class="lede mt-2">Our full registry lives on Zola, where you can browse, purchase, or contribute directly.</p>
+    <a id="registry-cta" class="btn btn-primary mt-3" target="_blank" rel="noopener noreferrer">View Our Registry <span class="btn-arrow">→</span></a>
+    <p class="form-note mt-2" style="color:rgba(244,237,224,.55);">Opens in a new tab</p>
   </div>
 </section>
 
@@ -91,5 +104,16 @@
 <script src="assets/js/content.js"></script>
 <script src="assets/js/main.js"></script>
 <script src="assets/js/site-gate.js"></script>
+<script>
+  document.getElementById('registry-categories-wrap').innerHTML = REGISTRY_CATEGORIES.map((cat, i) => `
+    <div class="info-card reveal reveal-delay-${i}">
+      <span class="icon-num">0${i + 1}</span>
+      <h3>${cat.name}</h3>
+      <p>${cat.desc}</p>
+    </div>
+  `).join('');
+
+  document.getElementById('registry-cta').href = REGISTRY_URL;
+</script>
 </body>
 </html>
