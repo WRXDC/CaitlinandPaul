@@ -139,7 +139,7 @@
 
         <div class="form-block">
           <label for="dietary-${m.guestId}">Dietary Restrictions</label>
-          <textarea id="dietary-${m.guestId}" name="dietary-${m.guestId}" placeholder="Allergies, preferences, anything we should know? All can be accomodated!">${existing && existing.dietary ? existing.dietary : ''}</textarea>
+          <textarea id="dietary-${m.guestId}" name="dietary-${m.guestId}" placeholder="Allergies, preferences, anything we should know? All can be accommodated!">${existing && existing.dietary ? existing.dietary : ''}</textarea>
         </div>
 
         <div class="form-block">
