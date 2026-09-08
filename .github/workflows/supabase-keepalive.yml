@@ -1,0 +1,24 @@
+name: Supabase keep-alive
+
+# Supabase free-tier projects auto-pause after 7 days with no API activity.
+# This pings the project every 3 days via a harmless, read-only RPC call
+# (find_invitation with a name that won't match anyone) to keep it awake.
+
+on:
+  schedule:
+    - cron: "0 12 */3 * *"
+  workflow_dispatch: {}
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping Supabase project
+        run: |
+          curl --fail --silent --show-error \
+            -X POST "https://wdgzrbqherxrqlxndtnt.supabase.co/rest/v1/rpc/find_invitation" \
+            -H "apikey: sb_publishable_ixqcm3zfBamwr6FuQEK3sQ_qXWznn5L" \
+            -H "Authorization: Bearer sb_publishable_ixqcm3zfBamwr6FuQEK3sQ_qXWznn5L" \
+            -H "Content-Type: application/json" \
+            -d '{"p_first_name":"__keepalive__","p_last_name":"__keepalive__"}' \
+            -o /dev/null
