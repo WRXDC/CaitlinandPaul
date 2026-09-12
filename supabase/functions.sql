@@ -148,6 +148,7 @@ declare
   v_resend_key text;
   v_subject text;
   v_body text;
+  v_notify_error text; -- TEMP debug field, remove once notifications are confirmed working
 begin
   select * into v_guest from guests where id = p_guest_id;
 
@@ -240,10 +241,10 @@ begin
       );
     end if;
   exception when others then
-    null;
+    v_notify_error := sqlerrm;
   end;
 
-  return jsonb_build_object('success', true);
+  return jsonb_build_object('success', true, 'notify_error', v_notify_error);
 end;
 $$;
 
