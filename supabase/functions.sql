@@ -27,7 +27,7 @@ returns jsonb
 language plpgsql
 security definer
 set search_path = public
-as $$
+as $func$
 declare
   v_guest guests%rowtype;
   v_count int;
@@ -89,7 +89,7 @@ begin
     'members', v_members
   );
 end;
-$$;
+$func$;
 
 revoke all on function public.find_invitation(text, text) from public;
 grant execute on function public.find_invitation(text, text) to anon, authenticated;
@@ -140,7 +140,7 @@ create or replace function public.submit_rsvp(
 language plpgsql
 security definer
 set search_path = public
-as $$
+as $func$
 declare
   v_guest guests%rowtype;
   v_has_plus_one boolean;
@@ -246,7 +246,7 @@ begin
 
   return jsonb_build_object('success', true, 'notify_error', v_notify_error);
 end;
-$$;
+$func$;
 
 revoke all on function public.submit_rsvp(uuid, text, text, boolean, text, text, text, text, text, text, boolean, text, text) from public;
 grant execute on function public.submit_rsvp(uuid, text, text, boolean, text, text, text, text, text, text, boolean, text, text) to anon, authenticated;
