@@ -117,8 +117,10 @@ grant execute on function public.find_invitation(text, text) to anon, authentica
 --
 --   select vault.update_secret(id, 'new_key') from vault.decrypted_secrets where name = 'resend_api_key';
 --
--- pg_net is what lets a Postgres function make an outbound HTTP call.
-create extension if not exists pg_net with schema extensions;
+-- pg_net is what lets a Postgres function make an outbound HTTP call. On
+-- Supabase, enable it via the dashboard (Database -> Extensions -> pg_net)
+-- rather than a plain `create extension` here - it ships with a fixed
+-- schema (net) and the dashboard toggle is the supported way to install it.
 
 create or replace function public.submit_rsvp(
   p_guest_id uuid,
