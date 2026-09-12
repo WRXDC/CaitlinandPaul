@@ -106,6 +106,20 @@ grant execute on function public.find_invitation(text, text) to anon, authentica
 -- string) so rsvp-admin.html can log them as their own person in the
 -- headcount, rather than just a note attached to whoever brought them.
 -- ---------------------------------------------------------------------
+-- Resend API key used by the email-notification block below. Never commit
+-- the real key to this file (it's a public repo) - instead, run this once
+-- yourself in the Supabase SQL Editor with your actual key substituted in:
+--
+--   select vault.create_secret('re_your_actual_key_here', 'resend_api_key');
+--
+-- Vault (schema `vault`) is enabled by default on every Supabase project and
+-- stores the value encrypted at rest. To rotate the key later:
+--
+--   select vault.update_secret(id, 'new_key') from vault.decrypted_secrets where name = 'resend_api_key';
+--
+-- pg_net is what lets a Postgres function make an outbound HTTP call.
+create extension if not exists pg_net with schema extensions;
+
 create or replace function public.submit_rsvp(
   p_guest_id uuid,
   p_first_name text,
@@ -128,6 +142,10 @@ as $$
 declare
   v_guest guests%rowtype;
   v_has_plus_one boolean;
+  v_is_update boolean;
+  v_resend_key text;
+  v_subject text;
+  v_body text;
 begin
   select * into v_guest from guests where id = p_guest_id;
 
@@ -136,6 +154,8 @@ begin
      or lower(trim(v_guest.last_name))  <> lower(trim(p_last_name)) then
     raise exception 'Invitation not found';
   end if;
+
+  select exists(select 1 from rsvps where guest_id = p_guest_id) into v_is_update;
 
   -- Plus-one fields only make sense if this guest is attending AND actually
   -- named someone they're bringing.
@@ -170,6 +190,56 @@ begin
     hotel = excluded.hotel,
     notes = excluded.notes,
     updated_at = now();
+
+  -- Fire-and-forget email notification, so every submission and every later
+  -- update lands in your inbox the moment it happens - a real-time copy of
+  -- the data that exists independently of Supabase. The Resend key lives in
+  -- Vault (see the note above this function), never in this file. pg_net
+  -- queues the HTTP call asynchronously and any failure here is swallowed,
+  -- so a bad key or a Resend outage can never block or fail the RSVP save
+  -- itself.
+  begin
+    select decrypted_secret into v_resend_key
+    from vault.decrypted_secrets
+    where name = 'resend_api_key';
+
+    if v_resend_key is not null then
+      v_subject := format('RSVP %s: %s %s (%s)',
+        case when v_is_update then 'updated' else 'received' end,
+        v_guest.first_name, v_guest.last_name,
+        case when p_attending then 'attending' else 'declined' end
+      );
+
+      v_body := format(
+        E'%s %s %s.\n\nAttending: %s\nMeal: %s\nDietary: %s\nWelcome party: %s\nHotel: %s\nPlus one: %s\nNotes: %s',
+        v_guest.first_name, v_guest.last_name,
+        case when v_is_update then 'updated their RSVP' else 'just submitted their RSVP' end,
+        case when p_attending then 'Yes' else 'No' end,
+        coalesce(p_meal, '-'),
+        coalesce(p_dietary, '-'),
+        case when p_welcome_party is null then '-' when p_welcome_party then 'Yes' else 'No' end,
+        coalesce(p_hotel, '-'),
+        case when v_has_plus_one then p_plus_one_first_name || ' ' || p_plus_one_last_name else '-' end,
+        coalesce(p_notes, '-')
+      );
+
+      perform net.http_post(
+        url := 'https://api.resend.com/emails',
+        headers := jsonb_build_object(
+          'Authorization', 'Bearer ' || v_resend_key,
+          'Content-Type', 'application/json'
+        ),
+        body := jsonb_build_object(
+          'from', 'RSVP Notifications <onboarding@resend.dev>',
+          'to', jsonb_build_array('caitlinandpaul2027@gmail.com'),
+          'subject', v_subject,
+          'text', v_body
+        )
+      );
+    end if;
+  exception when others then
+    null;
+  end;
 
   return jsonb_build_object('success', true);
 end;
