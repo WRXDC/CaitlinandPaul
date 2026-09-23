@@ -1,13 +1,22 @@
 name: Supabase keep-alive
 
-# Supabase free-tier projects auto-pause after 7 days with no API activity.
-# This pings the project every 3 days via a harmless, read-only RPC call
-# (find_invitation with a name that won't match anyone) to keep it awake.
+# Supabase pauses Free Plan projects that show "low activity" over a 7-day window.
+# The bar is not "one request per week" -- their docs say it takes "a few user
+# requests to the database each day" to stay awake. A single ping every 3 days
+# was NOT enough, and the project paused on ~2026-09-18 despite the pings
+# succeeding. This runs every 6 hours and makes a few real DB calls each time.
+#
+# The call is a harmless, read-only RPC (find_invitation with a name that
+# won't match anyone), which executes a real query inside Postgres.
 
 on:
   schedule:
-    - cron: "0 12 */3 * *"
+    - cron: "17 */6 * * *"
   workflow_dispatch: {}
+
+permissions:
+  contents: read
+  issues: write
 
 jobs:
   ping:
@@ -15,10 +24,42 @@ jobs:
     steps:
       - name: Ping Supabase project
         run: |
-          curl --fail --silent --show-error \
-            -X POST "https://wdgzrbqherxrqlxndtnt.supabase.co/rest/v1/rpc/find_invitation" \
-            -H "apikey: sb_publishable_ixqcm3zfBamwr6FuQEK3sQ_qXWznn5L" \
-            -H "Authorization: Bearer sb_publishable_ixqcm3zfBamwr6FuQEK3sQ_qXWznn5L" \
-            -H "Content-Type: application/json" \
-            -d '{"p_first_name":"__keepalive__","p_last_name":"__keepalive__"}' \
-            -o /dev/null
+          for i in 1 2 3; do
+            echo "ping $i"
+            curl --fail --silent --show-error \
+              --retry 3 --retry-all-errors --retry-delay 5 --max-time 30 \
+              -X POST "https://wdgzrbqherxrqlxndtnt.supabase.co/rest/v1/rpc/find_invitation" \
+              -H "apikey: sb_publishable_ixqcm3zfBamwr6FuQEK3sQ_qXWznn5L" \
+              -H "Authorization: Bearer sb_publishable_ixqcm3zfBamwr6FuQEK3sQ_qXWznn5L" \
+              -H "Content-Type: application/json" \
+              -d '{"p_first_name":"__keepalive__","p_last_name":"__keepalive__"}' \
+              -o /dev/null
+          done
+          echo "Supabase project is awake."
+
+      - name: Open an issue if the project is unreachable
+        if: failure()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const title = "Supabase project is unreachable (keep-alive failing)";
+            const { data: issues } = await github.rest.issues.listForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: "open",
+              labels: [],
+            });
+            if (issues.some(i => i.title === title)) return;
+            await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title,
+              body: [
+                "The keep-alive ping failed, which usually means the Supabase",
+                "project has been paused and **guests cannot submit RSVPs**.",
+                "",
+                "Fix: open the Supabase dashboard and click **Restore project**.",
+                "",
+                `Failing run: ${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`,
+              ].join("\n"),
+            });
