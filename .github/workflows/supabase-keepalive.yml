@@ -8,10 +8,15 @@ name: Supabase keep-alive
 #
 # The call is a harmless, read-only RPC (find_invitation with a name that
 # won't match anyone), which executes a real query inside Postgres.
+#
+# PAUSED as of 2026-09-23: RSVP is hidden site-wide and the Supabase project
+# is not being kept alive on purpose (wedding is Oct 2027, no rush). The
+# schedule trigger is removed below so this stops running automatically and
+# stops failing/alerting on a project we're letting sleep. Restore the
+# `schedule:` block (or just re-add a cron line) when RSVP work resumes;
+# `workflow_dispatch` is left in so it can still be run by hand if needed.
 
 on:
-  schedule:
-    - cron: "17 */6 * * *"
   workflow_dispatch: {}
 
 permissions:
