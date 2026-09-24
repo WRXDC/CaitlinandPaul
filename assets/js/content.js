@@ -54,7 +54,7 @@ const DRESS_CODE = {
 };
 
 const TRANSPORTATION = {
-  note: "We'll be running a shuttle straight from the InterContinental Presidente Mexico City to Casa Xipe and back for the wedding, so anyone staying there is all set. Staying elsewhere? Uber is reliable and inexpensive throughout Mexico City - more on that in the Travel section.",
+  note: "If you're staying at or near the InterContinental Presidente, meet us at the hotel's lobby entrance for the shuttle - we'll be running it straight to Casa Xipe and back. Staying further out? Uber is reliable and inexpensive throughout Mexico City - more on that in the Travel section.",
 };
 
 /* -------------------------------------------------------------------- */
