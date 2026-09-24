@@ -18,7 +18,7 @@ const COUNTDOWN_TARGET = new Date(WEDDING.date.iso);
 
 const SCHEDULE = [
   { time: "TBD", title: "Ceremony", desc: "Casa Xipe - details to come. We'll share exact timing as we lock in the run of show." },
-  { time: "TBD", title: "Cocktail Hour", desc: "Mezcal, snacks, and a chance to say hello before dinner. Location and timing TBD." },
+  { time: "TBD", title: "Cocktail Hour", desc: "Mezcal, snacks, and a chance to say hello before dinner at Casa Xipe. Timing TBD." },
   { time: "TBD", title: "Reception", desc: "Dinner, dancing, and toasts. Full details coming as we finalize plans with Casa Xipe." },
 ];
 
