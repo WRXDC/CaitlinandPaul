@@ -17,9 +17,9 @@ const WEDDING = {
 const COUNTDOWN_TARGET = new Date(WEDDING.date.iso);
 
 const SCHEDULE = [
-  { time: "TBD", title: "Ceremony", desc: "Casa Xipe - details to come. We'll share exact timing as we lock in the run of show." },
-  { time: "TBD", title: "Cocktail Hour", desc: "Mezcal, snacks, and a chance to say hello before dinner at Casa Xipe. Timing TBD." },
-  { time: "TBD", title: "Reception", desc: "Dinner, dancing, and toasts. Full details coming as we finalize plans with Casa Xipe." },
+  { time: "TBD", title: "Ceremony", desc: "Casa Xipe - outdoors but covered. Details to come; we'll share exact timing as we lock in the run of show." },
+  { time: "TBD", title: "Cocktail Hour", desc: "Mezcal, snacks, and a chance to say hello before dinner - outdoors but covered at Casa Xipe. Timing TBD." },
+  { time: "TBD", title: "Reception", desc: "Dinner, dancing, and toasts - outdoors but covered at Casa Xipe. Full details coming as we finalize plans." },
 ];
 
 // Full wedding-weekend schedule - used on the-wedding.html to show all three days.
@@ -50,7 +50,7 @@ const WEEKEND_SCHEDULE = [
 
 const DRESS_CODE = {
   label: "Cocktail Attire",
-  note: "Think: a step up from what you'd wear to a nice dinner, a step down from black tie. For most, that means a suit or dressy separates (tie optional), or a cocktail dress or dressy jumpsuit. Mexico City in October is mild, so leave room for a light layer once the sun goes down - and comfortable shoes are always a good idea; Casa Xipe has some outdoor space.",
+  note: "Think: a step up from what you'd wear to a nice dinner, a step down from black tie. For most, that means a suit or dressy separates (tie optional), or a cocktail dress or dressy jumpsuit. Mexico City in October is mild, so leave room for a light layer once the sun goes down - and comfortable shoes are always a good idea; the venue is outdoors but covered.",
 };
 
 const TRANSPORTATION = {
