@@ -39,6 +39,13 @@ const WEEKEND_SCHEDULE = [
       ...SCHEDULE,
     ],
   },
+  {
+    day: "Sunday, October 17",
+    label: "Farewell",
+    events: [
+      { time: "Morning", title: "Morning Activity (Optional)", desc: "Details TBD." },
+    ],
+  },
 ];
 
 const DRESS_CODE = {
