@@ -34,7 +34,10 @@ const WEEKEND_SCHEDULE = [
   {
     day: "Saturday, October 16",
     label: "The Wedding",
-    events: SCHEDULE,
+    events: [
+      { time: "Morning", title: "Walking Tour (Optional)", desc: "Leaving from the InterContinental Presidente, we'll have a guided walking tour of the neighborhood for anyone who wants to explore the city before the big evening. Expect about 1.5–2 hours. Completely optional - join if you'd like a look around with a local guide." },
+      ...SCHEDULE,
+    ],
   },
 ];
 
