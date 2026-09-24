@@ -28,7 +28,7 @@ const WEEKEND_SCHEDULE = [
     day: "Friday, October 15",
     label: "Welcome",
     events: [
-      { time: "TBD", title: "Welcome Party", desc: "Very casual - margaritas, mezcal, beers, and tacos to kick off the weekend and catch up with friendly faces before the big day. Location and timing TBD." },
+      { time: "TBD", title: "Welcome Party", desc: "Smart casual - margaritas, mezcal, beers, and tacos to kick off the weekend and catch up with friendly faces before the big day. Location and timing TBD." },
     ],
   },
   {
