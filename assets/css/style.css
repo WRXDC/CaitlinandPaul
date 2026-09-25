@@ -291,7 +291,7 @@ p{ color:var(--charcoal-70); max-width:60ch; }
 }
 
 /* favorite spots are cropped tight by default object-fit:cover; show the whole photo instead */
-#favorites-wrap .photo-frame img{ object-fit:contain; }
+#favorites-wrap .photo-frame img{ object-fit:cover; }
 
 /* ---------------------------------- cards ----------------------------------- */
 .card-grid{ display:grid; gap:28px; }

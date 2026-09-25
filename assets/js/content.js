@@ -126,12 +126,12 @@ const NEIGHBORHOODS = [
     id: "polanco",
     name: "Polanco",
     vibe: "Where We're Staying",
-    bestFor: "Everyone - it's where our room block and wedding-day shuttle are",
+    bestFor: "Everyone - it's where we're planning our room block and wedding-day shuttle",
     tone: "tone-3",
     img: "assets/img/polanco-neighborhood.jpg",
     description: "To keep things simple, we're recommending everyone stay in Polanco - Mexico City's most polished neighborhood, with wide tree-lined avenues, world-class restaurants, high-end shopping, and several great museums nearby. It's also where our wedding-day shuttle picks up and drops off, so staying here (or nearby) means you're covered.",
     hotels: [
-      { name: "InterContinental Presidente Mexico City", tier: "$$$", desc: "We've secured an affordable room block here for our guests - a large, reliable property right in the heart of Polanco. This is our main recommendation. We'll also be running a shuttle straight from here to Casa Xipe and back on the wedding day.", roomBlock: true, img: "assets/img/hotel-intercontinental-presidente.jpg" },
+      { name: "InterContinental Presidente Mexico City", tier: "$$$", desc: "Our top recommendation - a large, reliable property right in the heart of Polanco. We're planning to secure an affordable room block here for guests, and the wedding-day shuttle will run straight from here to Casa Xipe and back. Room block details to be confirmed.", roomBlock: true, img: "assets/img/hotel-intercontinental-presidente.jpg" },
       { name: "Hyatt Regency Mexico City", tier: "$$–$$$", desc: "A polished, full-service hotel just up the block from the InterContinental on Campos Elíseos - a nice middle ground between our room block and the more budget-friendly option below. A couple minutes' walk to catch the wedding shuttle.", img: "assets/img/hotel-hyatt-regency.jpg" },
       { name: "Residence L'Heritage Tennyson by BlueBay", tier: "$$", desc: "A more affordable apartment-style option a short walk from the InterContinental. You can still meet up with everyone there to catch the shuttle.", img: "assets/img/hotel-residence-lheritage.jpg" },
     ],
@@ -162,7 +162,7 @@ const DAY_TRIPS = [
 ];
 
 const FAVORITES = {
-  note: "This is our running list of the spots we love most - the places we'd take our own friends. We'll keep adding to it before the wedding, so check back.",
+  note: "This is our running list of the spots we love most - the places we'd take our own friends and family. We'll keep adding to it before the wedding, so check back.",
   items: [
     { name: "Churrería El Moro", desc: "Our favorite churro shop - get them with a cup of hot chocolate for dipping.", img: "assets/img/el-moro-churros.jpg" },
     { name: "Sonámbulo Café", desc: "A great coffee shop, worth the stop.", img: "assets/img/sonambulo-cafe.jpg" },
@@ -189,7 +189,7 @@ const FAQ = [
   {
     category: "Staying & Getting Around",
     items: [
-      { q: "Where should I stay?", a: "We've secured an affordable room block at the InterContinental Presidente Mexico City in Polanco, and that's our main recommendation - it keeps everyone in the same place and it's where our wedding-day shuttle picks up. If you'd like a nearby alternative, the Hyatt Regency Mexico City is a couple minutes' walk away, or for something more affordable, Residence L'Heritage Tennyson by BlueBay is also a short walk - both still put you in range of the shuttle. See our Stay page for details." },
+      { q: "Where should I stay?", a: "Our top recommendation is the InterContinental Presidente Mexico City in Polanco - it's where we're planning to secure a room block, and it's where the wedding-day shuttle will pick up. Details to be confirmed, so check back. If you'd like a nearby alternative, the Hyatt Regency Mexico City is a couple minutes' walk away, or for something more affordable, Residence L'Heritage Tennyson by BlueBay is also a short walk - both still put you in range of the shuttle. See our Stay page for details." },
       { q: "How many days should I stay?", a: "We'd suggest at least 3–4 nights if you can swing it - enough time to enjoy the wedding weekend and still explore the city a bit." },
       { q: "Is Mexico City safe?", a: "Yes - it's a huge, modern capital city, and the neighborhoods we're recommending are safe, walkable, and popular with visitors. Normal city precautions apply, as they would in any major city." },
       { q: "Should I rent a car?", a: "Please don't - parking is extremely difficult in Mexico City, and traffic can be a lot to deal with. Get around using Uber instead. It's safe and inexpensive, and available nearly everywhere you'll be." },

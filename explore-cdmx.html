@@ -129,7 +129,7 @@
 
   document.getElementById('favorites-wrap').innerHTML = FAVORITES.items.map((item, i) => `
     <div class="feature-card reveal reveal-delay-${i}">
-      ${Render.photoFrame(item.img, item.name, null, i, 'arch-top')}
+      ${Render.photoFrame(item.img, item.name, item.name, i, 'arch-top')}
       ${item.placeholder ? `<span class="needs-input mt-2" style="display:inline-flex; width:fit-content;">Add your pick</span>` : ''}
       <h3 class="mt-1" style="color:var(--paper);">${item.name}</h3>
       <p class="mt-1" style="color:rgba(244,237,224,.7);">${item.desc}</p>
