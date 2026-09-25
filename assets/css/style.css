@@ -591,3 +591,6 @@ textarea{ min-height:110px; resize:vertical; }
 .gate-input::placeholder{ color:rgba(244,237,224,.4); }
 .gate-input:focus-visible{ outline:2px solid var(--clay); outline-offset:2px; }
 .gate-error{ color:var(--ochre); font-size:.85rem; margin-top:14px; max-width:none; }
+
+/* ---- TEMP: hide Registry links until invitations go out. Delete this rule to show them again. ---- */
+a[href="registry.html"]{ display:none !important; }
