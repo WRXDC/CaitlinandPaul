@@ -83,7 +83,7 @@ const BEFORE_YOU_GO = [
 const GETTING_TO_CDMX = [
   { title: "Mexico City International Airport (MEX)", body: "The main airport for the city, located about 8 miles (a 25–45 minute drive, depending on traffic) from the hotel neighborhoods we recommend. It has two terminals - double check which one your flight uses." },
   { title: "From the Airport", body: "Uber and official airport taxis both operate from MEX. Uber is generally the easiest and most affordable option - just walk to the designated pickup zone (follow signs) rather than the taxi stands right outside baggage claim." },
-  { title: "Airport Transfers", body: "Some hotels offer private transfer service on request. We'll share group transportation options for arrival days as they're finalized." },
+  { title: "Airport Transfers", body: "Check with your hotel - some offer private transfer service on request." },
 ];
 
 const GETTING_AROUND = [

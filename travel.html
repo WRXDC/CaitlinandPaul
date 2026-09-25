@@ -125,6 +125,72 @@
 
 <style>
 @media (max-width:900px){ .travel-grid{ grid-template-columns:1fr !important; } }
+
+/* ── Boarding Pass ─────────────────────────── */
+.boarding-pass{
+  display:flex; align-items:stretch;
+  background:var(--paper);
+  border:1px solid var(--line-strong);
+  border-radius:var(--radius-md);
+  overflow:hidden;
+  box-shadow:0 6px 32px rgba(36,31,25,.11);
+  position:relative;
+}
+
+/* Left: main section */
+.bp-main{ flex:1 1 0; min-width:0; display:flex; flex-direction:column; }
+
+.bp-header{
+  background:var(--green);
+  color:var(--paper);
+  display:flex; justify-content:space-between; align-items:center;
+  padding:14px 28px;
+}
+.bp-airline{ font-family:var(--font-display); font-size:1rem; letter-spacing:.04em; }
+.bp-badge{
+  font-family:var(--font-mono); font-size:.58rem; letter-spacing:.18em; text-transform:uppercase;
+  color:var(--ochre-tint); border:1px solid rgba(196,147,60,.45); padding:4px 10px; border-radius:2px;
+}
+
+.bp-route{
+  display:flex; align-items:center; gap:0;
+  padding:26px 28px 22px;
+  border-bottom:1px dashed var(--line-strong);
+}
+.bp-city{ display:flex; flex-direction:column; }
+.bp-iata{ font-family:var(--font-display); font-size:2.2rem; font-weight:500; line-height:1; color:var(--charcoal); }
+.bp-city-label{
+  font-family:var(--font-mono); font-size:.58rem; letter-spacing:.12em; text-transform:uppercase;
+  color:var(--charcoal-50); margin-top:5px;
+}
+.bp-route-mid{
+  flex:1; display:flex; flex-direction:column; align-items:center; gap:4px; padding:0 16px;
+}
+.bp-route-line{ display:flex; align-items:center; gap:6px; color:var(--ochre); font-size:.9rem; letter-spacing:.1em; }
+.bp-route-line span{ display:block; height:1px; background:var(--ochre); flex:1; min-width:20px; }
+.bp-event-tag{
+  font-family:var(--font-mono); font-size:.56rem; letter-spacing:.14em; text-transform:uppercase;
+  color:var(--charcoal-50);
+}
+
+.bp-fields{
+  display:grid; grid-template-columns:repeat(3,1fr); gap:18px 20px;
+  padding:22px 28px 28px;
+}
+.bp-field .bp-f-label{
+  font-family:var(--font-mono); font-size:.58rem; letter-spacing:.14em; text-transform:uppercase;
+  color:var(--charcoal-50); display:block; margin-bottom:5px;
+}
+.bp-field .bp-f-value{
+  font-family:var(--font-display); font-size:.98rem; color:var(--charcoal); line-height:1.25;
+}
+
+/* Mobile */
+@media (max-width:660px){
+  .bp-fields{ grid-template-columns:repeat(2,1fr); }
+  .bp-route{ flex-wrap:wrap; gap:12px; }
+  .bp-route-mid{ flex-direction:row; padding:0 8px; }
+}
 </style>
 
 <footer class="site-footer">
@@ -161,7 +227,39 @@
 <script src="assets/js/main.js"></script>
 <script src="assets/js/site-gate.js"></script>
 <script>
-  document.getElementById('glance-wrap').innerHTML = Render.glanceCard(AT_A_GLANCE);
+  // Boarding pass – at-a-glance
+  document.getElementById('glance-wrap').innerHTML = `
+    <div class="boarding-pass reveal">
+      <div class="bp-main">
+        <div class="bp-header">
+          <span class="bp-airline">Caitlin &amp; Paul</span>
+          <span class="bp-badge">Boarding Pass</span>
+        </div>
+        <div class="bp-route">
+          <div class="bp-city">
+            <span class="bp-iata" style="font-size:1.5rem;color:var(--charcoal-50);">Your City</span>
+            <span class="bp-city-label">Origin</span>
+          </div>
+          <div class="bp-route-mid">
+            <div class="bp-route-line"><span></span>✈<span></span></div>
+            <span class="bp-event-label" style="font-family:var(--font-mono);font-size:.56rem;letter-spacing:.14em;text-transform:uppercase;color:var(--charcoal-50);">Caitlin &amp; Paul · October 16, 2027</span>
+          </div>
+          <div class="bp-city" style="text-align:right;">
+            <span class="bp-iata">MEX</span>
+            <span class="bp-city-label">Mexico City</span>
+          </div>
+        </div>
+        <div class="bp-fields">
+          ${AT_A_GLANCE.map(item => `
+            <div class="bp-field">
+              <span class="bp-f-label">${item.label}</span>
+              <span class="bp-f-value">${item.value}</span>
+            </div>
+          `).join('')}
+        </div>
+      </div>
+    </div>
+  `;
 
   document.getElementById('before-you-go-wrap').innerHTML = BEFORE_YOU_GO.map(item => `
     <div class="reveal" style="padding:24px 0; border-bottom:1px solid var(--line); display:grid; grid-template-columns:180px 1fr; gap:24px;">
