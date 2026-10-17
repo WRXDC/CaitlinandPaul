@@ -22,7 +22,7 @@
   // Past the deadline, lock the form instead of silently accepting (or
   // silently rejecting) late changes - guests are pointed to contact you
   // directly instead.
-  const deadlinePassed = new Date() > new Date(WEDDING.rsvpDeadline.iso + 'T23:59:59');
+  const deadlinePassed = !!WEDDING.rsvpDeadline && new Date() > new Date(WEDDING.rsvpDeadline.iso + 'T23:59:59');
   if(deadlinePassed){
     searchStep.style.display = 'none';
     foundStep.style.display = 'none';
