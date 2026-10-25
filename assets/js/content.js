@@ -223,7 +223,7 @@ const FAQ = [
       { q: "What happens after I RSVP?", a: "You're all set! Your RSVP includes your meal choice and where you're staying, so there's nothing else to do unless your plans change - in that case, just reach out and let us know. We'll follow up closer to the date with any final details." },
       { q: "By when do I need to RSVP?", a: WEDDING.rsvpDeadline
         ? "Please RSVP by " + WEDDING.rsvpDeadline.display + " so we can finalize headcounts with our vendors."
-        : "We'll share the RSVP deadline soon - in the meantime, the earlier the better so we can finalize headcounts with our vendors." },
+        : "RSVPs will open once formal invitations are sent, and your invitation will include the RSVP deadline. Please check back here for updates!" },
     ],
   },
 ];
