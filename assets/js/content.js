@@ -132,12 +132,33 @@ const NEIGHBORHOODS = [
     img: "assets/img/polanco-neighborhood.jpg",
     description: "To keep things simple, we're recommending everyone stay in Polanco - Mexico City's most polished neighborhood, with wide tree-lined avenues, world-class restaurants, high-end shopping, and several great museums nearby. It's also where our wedding-day shuttle picks up and drops off, so staying here (or nearby) means you're covered.",
     hotels: [
-      { name: "InterContinental Presidente Mexico City", tier: "$$$", desc: "Our top recommendation - a large, reliable property right in the heart of Polanco. We've secured a room block here for guests, and the wedding-day shuttle will run straight from here to Casa Xipe and back. The booking link is coming soon, so check back here.", roomBlock: true, img: "assets/img/hotel-intercontinental-presidente.jpg" },
+      { name: "InterContinental Presidente Mexico City", tier: "$$$", desc: "Our top recommendation - a large, reliable property right in the heart of Polanco. We've secured a room block here for guests (from $259/night with breakfast), and the wedding-day shuttle will run straight from here to Casa Xipe and back. Booking link coming soon - see below for rates and details.", roomBlock: true, img: "assets/img/hotel-intercontinental-presidente.jpg" },
       { name: "Hyatt Regency Mexico City", tier: "$$–$$$", desc: "A polished, full-service hotel just up the block from the InterContinental on Campos Elíseos - a nice middle ground between our room block and the more budget-friendly option below. A couple minutes' walk to catch the wedding shuttle.", img: "assets/img/hotel-hyatt-regency.jpg" },
       { name: "Residence L'Heritage Tennyson by BlueBay", tier: "$$", desc: "A more affordable apartment-style option a short walk from the InterContinental. You can still meet up with everyone there to catch the shuttle.", img: "assets/img/hotel-residence-lheritage.jpg" },
     ],
   },
 ];
+
+const ROOM_BLOCK = {
+  hotel: "InterContinental Presidente Mexico City",
+  dates: "October 13–17, 2027",
+  code: "S7K",
+  deadline: "September 24, 2027",
+  rates: [
+    { name: "Standard Room", price: "$259", note: "Breakfast included" },
+    { name: "Club Room", price: "$359", note: "Club Lounge access on the 39th floor - breakfast buffet 6–10am, snacks & drinks 6–8pm" },
+    { name: "Suite", price: "$609", note: "Club Lounge access on the 39th floor - breakfast buffet 6–10am, snacks & drinks 6–8pm" },
+  ],
+  details: [
+    { title: "How to book", hidden: true, body: "Email <a href=\"mailto:mexico_grupos@grupopresidente.com\">mexico_grupos@grupopresidente.com</a> or call <a href=\"tel:+18003440548\">1-800-344-0548</a> from the U.S. (<a href=\"tel:+525553277777\">+52 55 5327 7777</a> internationally) and mention group code <strong>S7K</strong> for the Caitlin &amp; Paul wedding. An online booking link is coming soon." },
+    { title: "Book by", body: "September 24, 2027. After that, any remaining rooms go back to the hotel at their regular rates, subject to availability." },
+    { title: "Taxes", body: "Rates are in USD per room, per night, for single or double occupancy, plus 16% VAT and a 3.5% lodging tax." },
+    { title: "Cancellation", body: "Cancel at least 15 days before arrival. No-shows and early departures are charged for the full stay." },
+    { title: "Kids & extra guests", body: "Up to two kids 12 and under stay free in a room with two adults. A third guest over 12 is an extra $60/night plus tax." },
+    { title: "Check-in & out", body: "Each guest pays for their own room and incidentals, with a card guarantee at check-in. Early check-in or late check-out costs half a night's rate." },
+    { title: "Perks", body: "15% off services at the hotel's Hela Spa for wedding guests." },
+  ],
+};
 
 /* -------------------------------------------------------------------- */
 /* EXPLORE CDMX                                                         */
@@ -190,7 +211,7 @@ const FAQ = [
   {
     category: "Staying & Getting Around",
     items: [
-      { q: "Where should I stay?", a: "Our top recommendation is the InterContinental Presidente Mexico City in Polanco - we've secured a room block there, and it's where the wedding-day shuttle will pick up. The booking link is coming soon, so check back. If you'd like a nearby alternative, the Hyatt Regency Mexico City is a couple minutes' walk away, or for something more affordable, Residence L'Heritage Tennyson by BlueBay is also a short walk - both still put you in range of the shuttle. See our Stay page for details." },
+      { q: "Where should I stay?", a: "Our top recommendation is the InterContinental Presidente Mexico City in Polanco - we've secured a room block there, and it's where the wedding-day shuttle will pick up. Rates are on our Stay page, and the booking link is coming soon. If you'd like a nearby alternative, the Hyatt Regency Mexico City is a couple minutes' walk away, or for something more affordable, Residence L'Heritage Tennyson by BlueBay is also a short walk - both still put you in range of the shuttle. See our Stay page for details." },
       { q: "How many days should I stay?", a: "We'd suggest at least 3–4 nights if you can swing it - enough time to enjoy the wedding weekend and still explore the city a bit." },
       { q: "Is Mexico City safe?", a: "Yes - it's a huge, modern capital city, and the neighborhoods we're recommending are safe, walkable, and popular with visitors. Normal city precautions apply, as they would in any major city." },
       { q: "Should I rent a car?", a: "Please don't - parking is extremely difficult in Mexico City, and traffic can be a lot to deal with. Get around using Uber instead. It's safe and inexpensive, and available nearly everywhere you'll be." },
