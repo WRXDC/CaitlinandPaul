@@ -215,7 +215,7 @@ const Render = {
       ? `<a class="btn-ghost" href="${hotel.bookingUrl}">Book Hotel →</a>`
       : (hotel.roomBlock
         ? `<span class="dist-note">Booking link coming soon</span>`
-        : `<a class="btn-ghost" href="#">Book Hotel →</a>`);
+        : '');
     return `<div class="hotel-card reveal">
       ${Render.photoFrame(hotel.img, hotel.name, hotel.name, i)}
       <div class="hotel-card-body">
