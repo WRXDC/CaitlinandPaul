@@ -155,7 +155,6 @@ const ROOM_BLOCK = {
     { title: "Taxes", body: "Rates are in USD per room, per night, for single or double occupancy, plus 16% VAT and a 3.5% lodging tax." },
     { title: "Cancellation", body: "Cancel at least 15 days before arrival. No-shows and early departures are charged for the full stay." },
     { title: "Kids & extra guests", body: "Up to two kids 12 and under stay free in a room with two adults. A third guest over 12 is an extra $60/night plus tax." },
-    { title: "Check-in & out", body: "Each guest pays for their own room and incidentals, with a card guarantee at check-in. Early check-in or late check-out costs half a night's rate." },
     { title: "Perks", body: "15% off services at the hotel's Hela Spa for wedding guests." },
   ],
 };
