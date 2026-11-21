@@ -146,13 +146,14 @@ const ROOM_BLOCK = {
   deadline: "September 24, 2027",
   rates: [
     { name: "Standard Room", price: "$259", note: "Breakfast included" },
-    { name: "Club Room", price: "$359", note: "Club Lounge access on the 39th floor - breakfast buffet 6–10am, snacks & drinks 6–8pm" },
-    { name: "Suite", price: "$609", note: "Club Lounge access on the 39th floor - breakfast buffet 6–10am, snacks & drinks 6–8pm" },
+    { name: "Club Room", price: "$359", note: "Breakfast included" },
+    { name: "Suite", price: "$609", note: "Breakfast included" },
   ],
   details: [
     { title: "How to book", hidden: true, body: "Email <a href=\"mailto:mexico_grupos@grupopresidente.com\">mexico_grupos@grupopresidente.com</a> or call <a href=\"tel:+18003440548\">1-800-344-0548</a> from the U.S. (<a href=\"tel:+525553277777\">+52 55 5327 7777</a> internationally) and mention group code <strong>S7K</strong> for the Caitlin &amp; Paul wedding. An online booking link is coming soon." },
     { title: "Book by", body: "September 24, 2027. After that, any remaining rooms go back to the hotel at their regular rates, subject to availability." },
     { title: "Taxes", body: "Rates are in USD per room, per night, for single or double occupancy, plus 16% VAT and a 3.5% lodging tax." },
+    { title: "Breakfast", body: "Daily breakfast is included with every room. Club Rooms and Suites also get Club Lounge access on the 39th floor, with a breakfast buffet from 6–10am and snacks &amp; drinks from 6–8pm." },
     { title: "Cancellation", body: "Cancel at least 15 days before arrival. No-shows and early departures are charged for the full stay." },
     { title: "Kids & extra guests", body: "Up to two kids 12 and under stay free in a room with two adults. A third guest over 12 is an extra $60/night plus tax." },
     { title: "Perks", body: "15% off services at the hotel's Hela Spa for wedding guests." },
