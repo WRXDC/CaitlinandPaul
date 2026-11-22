@@ -132,9 +132,9 @@ const NEIGHBORHOODS = [
     img: "assets/img/polanco-neighborhood.jpg",
     description: "To keep things simple, we're recommending everyone stay in Polanco - Mexico City's most polished neighborhood, with wide tree-lined avenues, world-class restaurants, high-end shopping, and several great museums nearby. It's also where our wedding-day shuttle picks up and drops off, so staying here (or nearby) means you're covered.",
     hotels: [
-      { name: "InterContinental Presidente Mexico City", tier: "$$$", desc: "Our top recommendation - a large, reliable property right in the heart of Polanco. We've secured a room block here for guests (from $259/night with breakfast), and the wedding-day shuttle will run straight from here to Casa Xipe and back. Booking link coming soon - see below for rates and details.", roomBlock: true, img: "assets/img/hotel-intercontinental-presidente.jpg" },
-      { name: "Hyatt Regency Mexico City", tier: "$$–$$$", desc: "A polished, full-service hotel just up the block from the InterContinental on Campos Elíseos - a nice middle ground between our room block and the more budget-friendly option below. A couple minutes' walk to catch the wedding shuttle.", img: "assets/img/hotel-hyatt-regency.jpg" },
-      { name: "Residence L'Heritage Tennyson by BlueBay", tier: "$$", desc: "A more affordable apartment-style option a short walk from the InterContinental. You can still meet up with everyone there to catch the shuttle.", img: "assets/img/hotel-residence-lheritage.jpg" },
+      { name: "InterContinental Presidente Mexico City", tier: "$$", desc: "Our top recommendation - a large, reliable property right in the heart of Polanco. We've secured a room block here for guests (from $259/night with breakfast), and the wedding-day shuttle will run straight from here to Casa Xipe and back. Booking link coming soon - see below for rates and details.", roomBlock: true, img: "assets/img/hotel-intercontinental-presidente.jpg" },
+      { name: "Hyatt Regency Mexico City", tier: "$$", desc: "A polished, full-service alternative just up the block from the InterContinental on Campos Elíseos. A couple minutes' walk to catch the wedding shuttle.", img: "assets/img/hotel-hyatt-regency.jpg" },
+      { name: "Residence L'Heritage Tennyson by BlueBay", tier: "$", desc: "A more affordable apartment-style option a short walk from the InterContinental. You can still meet up with everyone there to catch the shuttle.", img: "assets/img/hotel-residence-lheritage.jpg" },
     ],
   },
 ];
